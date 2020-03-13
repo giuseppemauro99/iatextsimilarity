@@ -1,6 +1,6 @@
-from django.forms import models
+from django import forms
 
 
-class  Form1 ( models.Model ):
-     file1 = models.FileField(label="Inserisci file 1")
-     file2_query = models.FileField(label="Inserisci file 2")
+class  Form1 ( forms.Form ):
+     file1 = forms.FileField(label="Inserisci file 1")
+     file2_query = forms.FileField(label="Inserisci file 2")

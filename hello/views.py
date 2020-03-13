@@ -18,7 +18,6 @@ def index(request):
         form = Form1(request.POST, request.FILES)
         # check whether it's valid:
         if form.is_valid():
-            form.save()
             # process the data in form.cleaned_data as required
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
