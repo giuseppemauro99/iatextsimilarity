@@ -1,3 +1,7 @@
 django
 gunicorn
 django-heroku
+nltk
+gensim
+pymongo
+scipy>=0.18.1
