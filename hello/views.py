@@ -1,3 +1,7 @@
+from xml.dom.minidom import Document
+
+import gensim
+import numpy as np
 import pymongo as pymongo
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
