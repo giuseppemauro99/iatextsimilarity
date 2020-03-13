@@ -48,14 +48,14 @@ def uploadToMongoDB(request):
     f1 = mydb["files"].insert_one(text_file1)
     f2 = mydb["files"].insert_one(text_file2)
 
-    request.session['file1'] = f1.inserted_id
-    request.session['file2_query'] = f2.inserted_id
+    request.session['file1_id'] = f1.inserted_id
+    request.session['file2_id'] = f2.inserted_id
 
     return True
 
 def calculatesimilarity(request):
-    file1id = request.session['file1']
-    file2id = request.session['file2_query']
+    file1id = request.session['file1_id']
+    file2id = request.session['file2_id']
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id})
 
