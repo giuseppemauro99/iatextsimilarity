@@ -22,7 +22,7 @@ def index(request):
             # process the data in form.cleaned_data as required
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
-            uploadToMongoDB(request)
+            uploadToMongoDB(request.FILES['file1'],request.FILES['file2_query'],request)
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
 
@@ -32,14 +32,12 @@ def index(request):
 
     return render(request, 'index.html', {'form': form})
 
-def uploadToMongoDB(request):
+def uploadToMongoDB(file1,file2,request):
     myclient = pymongo.MongoClient("mongodb://admin:Admin99@ds113935.mlab.com:13935/heroku_166t21vc")
     mydb = myclient["heroku_166t21vc"]
 
     text_file1 = ""
     text_file2 = ""
-    file1 = open("./f1.txt","r+")
-    file2 = open("./f2.txt", "r+")
     for line in file1:
         text_file1 = text_file1 + line
     for line in file2:
@@ -48,14 +46,14 @@ def uploadToMongoDB(request):
     f1 = mydb["files"].insert_one(text_file1)
     f2 = mydb["files"].insert_one(text_file2)
 
-    request.session['file1_id'] = f1.inserted_id
-    request.session['file2_id'] = f2.inserted_id
+    request.session['file1'] = f1.inserted_id
+    request.session['file2_query'] = f2.inserted_id
 
     return True
 
 def calculatesimilarity(request):
-    file1id = request.session['file1_id']
-    file2id = request.session['file2_id']
+    file1id = request.session['file1']
+    file2id = request.session['file2_query']
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id})
 
