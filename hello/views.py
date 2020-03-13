@@ -13,7 +13,8 @@ def index(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
+            request.session['sentence1'] = form.cleaned_data["sentence1"]
+            request.session['sentence2'] = form.cleaned_data["sentence1"]
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
 
@@ -23,6 +24,11 @@ def index(request):
 
     return render(request, 'index.html', {'form': form})
 
+def calculatesimilarity(request):
+    sentence1 = request.session['sentence1']
+    sentence2 = request.session['sentence1']
+
+    return render(request, 'calculatesimilarity.html', {'sentence1': sentence1, 'sentence2': sentence2})
 
 def db(request):
 
