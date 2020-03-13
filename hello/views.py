@@ -38,9 +38,9 @@ def uploadToMongoDB(file1,file2,request):
     text_file1 = ""
     text_file2 = ""
     for line in file1:
-        text_file1 = text_file1 + line
+        text_file1 = text_file1 + str(line)
     for line in file2:
-        text_file2 = text_file2 + line
+        text_file2 = text_file2 + str(line)
 
     f1 = mydb["files"].insert_one(text_file1)
     f2 = mydb["files"].insert_one(text_file2)
