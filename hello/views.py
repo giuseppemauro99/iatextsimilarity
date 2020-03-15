@@ -1,5 +1,8 @@
 from xml.dom.minidom import Document
 
+
+from bson import json_util, ObjectId
+import json
 import os
 import gensim
 import numpy as np
@@ -44,8 +47,11 @@ def uploadToMongoDB(file1,file2,request):
     for line in file2:
         text_file2 = text_file2 + str(line)
 
-    f1 = mydb["files"].insert_one({'data': str(text_file1)})
-    f2 = mydb["files"].insert_one({'data': str(text_file2)})
+    text1_json = json.loads(json_util.dumps({'data': text_file1}))
+    text2_json = json.loads(json_util.dumps({'data': text_file2}))
+
+    f1 = mydb["files"].insert_one(text1_json)
+    f2 = mydb["files"].insert_one(text2_json)
 
     request.session['file1'] = f1.inserted_id
     request.session['file2_query'] = f2.inserted_id
