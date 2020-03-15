@@ -2,6 +2,7 @@ django
 gunicorn
 django-heroku
 spacy
+it_core_news_sm
 gensim
 pymongo
 scipy>=0.18.1
