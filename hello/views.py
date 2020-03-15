@@ -43,12 +43,12 @@ def uploadToMongoDB(file1,file2,request):
     text_file1 = ""
     text_file2 = ""
     for line in file1:
-        text_file1 = text_file1 + str(line)
+        text_file1 = text_file1 + line
     for line in file2:
         text_file2 = text_file2 + str(line)
 
-    text1_json = {'data': text_file1.decode('utf-8')}
-    text2_json = {'data': text_file2.decode('utf-8')}
+    text1_json = {'data': text_file1}
+    text2_json = {'data': text_file2}
 
     f1 = mydb["files"].insert_one(text1_json)
     f2 = mydb["files"].insert_one(text2_json)
