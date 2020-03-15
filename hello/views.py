@@ -1,6 +1,6 @@
 from xml.dom.minidom import Document
 
-import spacy,it_core_news_sm
+import spacy
 import os
 import pymongo as pymongo
 from bson import ObjectId
@@ -68,7 +68,7 @@ def calculatesimilarity(request):
 
 
 def similarityMatrix(file1, file2):  # non so se funzia
-    nlp = it_core_news_sm.load()
+    nlp = spacy.load("it_core_news_sm")
     col = len(file1.splitlines()) - 1
     row = len(file2.splitlines()) - 1
 
