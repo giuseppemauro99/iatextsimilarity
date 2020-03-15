@@ -32,7 +32,7 @@ def index(request):
     return render(request, 'index.html', {'form': form})
 
 def uploadToMongoDB(file1,file2,request):
-    myclient = pymongo.MongoClient("mongodb://user1:User99@ds113935.mlab.com:13935/heroku_166t21vc&retryWrites=false")
+    myclient = pymongo.MongoClient("mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc&retryWrites=false")
     mydb = myclient["heroku_166t21vc"]
 
     text_file1 = ""
