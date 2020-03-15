@@ -71,7 +71,7 @@ def similarityMatrix(file1, file2):  # non so se funzia
     col = len(file1.splitlines()) - 1
     row = len(file2.splitlines()) - 1
 
-    sim_matrix = [[input() for i in range (col)] for j in range(row)]
+    sim_matrix = [[0 for i in range(col)] for j in range(row)]
     i = j = 0
     for line1 in file1.splitlines():
         for line2 in file2.splitlines():
