@@ -33,7 +33,7 @@ def index(request):
     return render(request, 'index.html', {'form': form})
 
 def uploadToMongoDB(file1,file2,request):
-    myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI') + "&retryWrites=false")
+    myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI'))
     mydb = myclient.get_default_database()
 
     text_file1 = ""
