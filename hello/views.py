@@ -1,4 +1,5 @@
 from xml.dom.minidom import Document
+import json
 
 import gensim
 import numpy as np
@@ -42,8 +43,8 @@ def uploadToMongoDB(file1,file2,request):
     for line in file2:
         text_file2 = text_file2 + str(line)
 
-    f1 = mydb["files"].insert_one({'data': text_file1})
-    f2 = mydb["files"].insert_one({'data': text_file2})
+    f1 = mydb["files"].insert_one(json.dump(text_file1))
+    f2 = mydb["files"].insert_one(json.dump(text_file1))
 
     request.session['file1'] = f1.inserted_id
     request.session['file2_query'] = f2.inserted_id
