@@ -59,23 +59,21 @@ def calculatesimilarity(request):
     file1id = request.session['file1']
     file2id = request.session['file2_query']
 
-    for doc in mydb.get_collection("files").find_one_and_delete({'_id': file1id}):
-        file1 = doc["data"]
-    for doc in mydb.get_collection("files").find_one_and_delete({'_id': file2id}):
-        file2 = doc["data"]
+    file1 = mydb.get_collection("files").find_one_and_delete({'_id': file1id})["data"]
+    file2 = mydb.get_collection("files").find_one_and_delete({'_id': file2id})["data"]
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
                                                         'sim_matrix': similarityMatrix(file1, file2)})
 
 
 def similarityMatrix(file1, file2):  # non so se funzia
-    col = len(file1.read().split(b'\n')) - 1
-    row = len(file2.read().split(b'\n')) - 1
+    col = len(file1.splitlines()) - 1
+    row = len(file2.splitlines()) - 1
 
-    sim_matrix = [[input() for i in range (col)] for j in range (row)]
+    sim_matrix = [[input() for i in range (col)] for j in range(row)]
     i = j = 0
-    for line1 in file1:
-        for line2 in file2:
+    for line1 in file1.splitlines():
+        for line2 in file2.splitlines():
             doc1 = nlp_latin(line1)
             doc2 = nlp_latin(line1)
             sim_matrix[i][j] = doc1.similarity(doc2)
