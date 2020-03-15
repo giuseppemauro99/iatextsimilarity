@@ -75,8 +75,8 @@ def similarityMatrix(file1, file2):  # non so se funzia
     i = j = 0
     for line1 in file1.splitlines():
         for line2 in file2.splitlines():
-            doc1 = nlp_latin(line1)
-            doc2 = nlp_latin(line1)
+            doc1 = spacy.nlp(line1)
+            doc2 = spacy.nlp(line1)
             sim_matrix[i][j] = doc1.similarity(doc2)
             j = j + 1
         i = i + 1
