@@ -1,5 +1,6 @@
 from xml.dom.minidom import Document
 
+import os
 import gensim
 import numpy as np
 import pymongo as pymongo
@@ -32,8 +33,8 @@ def index(request):
     return render(request, 'index.html', {'form': form})
 
 def uploadToMongoDB(file1,file2,request):
-    myclient = pymongo.MongoClient("mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc&retryWrites=false")
-    mydb = myclient.get_default_database();
+    myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI') + "&retryWrites=false")
+    mydb = myclient.get_default_database()
 
     text_file1 = ""
     text_file2 = ""
