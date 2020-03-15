@@ -3,6 +3,7 @@ from xml.dom.minidom import Document
 import spacy
 import os
 import pymongo as pymongo
+from bson import ObjectId
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
@@ -59,8 +60,8 @@ def calculatesimilarity(request):
     file1id = request.session['file1']
     file2id = request.session['file2_query']
 
-    file1 = mydb.get_collection("files").find_one_and_delete({'_id': {"$oid": file1id}})["data"]
-    file2 = mydb.get_collection("files").find_one_and_delete({'_id': {"$oid": file2id}})["data"]
+    file1 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file1id)})["data"]
+    file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
                                                         'sim_matrix': similarityMatrix(file1, file2)})
