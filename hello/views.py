@@ -34,7 +34,6 @@ def index(request):
 
 def uploadToMongoDB(file1,file2,request):
     myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI'))
-    myclient.retry_writes = False
     mydb = myclient.get_default_database()
 
     text_file1 = ""
