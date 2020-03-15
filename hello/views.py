@@ -64,8 +64,8 @@ def calculatesimilarity(request):
     file1id = request.session['file1']
     file2id = request.session['file2_query']
 
-    file1 = mydb.get_collection("files").find_one_and_delete(query={'_id': file1id})
-    file2 = mydb.get_collection("files").find_one_and_delete(query={'_id': file2id})
+    file1 = mydb.get_collection("files").find_one_and_delete({'_id': file1id})
+    file2 = mydb.get_collection("files").find_one_and_delete({'_id': file2id})
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
                                                         'similarity': similarity(file1, file2)})
