@@ -1,9 +1,10 @@
 from xml.dom.minidom import Document
 
-import os
+import os,json
 import gensim
 import numpy as np
 import pymongo as pymongo
+from bson import ObjectId
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from nltk import sent_tokenize, word_tokenize
@@ -43,8 +44,8 @@ def uploadToMongoDB(file1,file2,request):
     for line in file2:
         text_file2 = text_file2 + str(line)
 
-    f1 = mydb["files"].insert_one({'data': text_file1})
-    f2 = mydb["files"].insert_one({'data': text_file2})
+    f1 = mydb["files"].insert_one(JSONEncoder.encode({'data': text_file1}))
+    f2 = mydb["files"].insert_one(JSONEncoder.encode({'data': text_file2}))
 
     request.session['file1'] = f1.inserted_id
     request.session['file2_query'] = f2.inserted_id
@@ -112,3 +113,10 @@ def db(request):
     greetings = Greeting.objects.all()
 
     return render(request, "db.html", {"greetings": greetings})
+
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
