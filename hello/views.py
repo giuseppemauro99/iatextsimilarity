@@ -1,21 +1,17 @@
 from xml.dom.minidom import Document
 
-from bson import json_util, ObjectId
-import json
+import spacy
 import os
-import gensim
-import numpy as np
 import pymongo as pymongo
-from bson import ObjectId
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from nltk import sent_tokenize, word_tokenize
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 from .models import Greeting
 from .forms import Form1
 
 myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI'))
 mydb = myclient.get_default_database()
+
 
 # Create your views here.
 def index(request):
@@ -40,7 +36,6 @@ def index(request):
 
 
 def uploadToMongoDB(file1, file2, request):
-
     text_file1 = ""
     text_file2 = ""
     for line in file1:
@@ -64,53 +59,28 @@ def calculatesimilarity(request):
     file1id = request.session['file1']
     file2id = request.session['file2_query']
 
-    file1 = mydb.get_collection("files").find_one_and_delete({'_id': file1id})
+    file1 = mydb.get_collection("files").find_one_and_delete({'_id': file1id})  # non funzia
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': file2id})
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
-                                                        'similarity': similarity(file1, file2)})
+                                                        'similarity': similarityMatrix(file1, file2)})
 
 
-def similarity(file1, file2):
-    file_docs = []
-    file2_docs = []
-    avg_sims = []
+def similarityMatrix(file1, file2):  # non so se funzia
+    col = len(file1.read().split(b'\n')) - 1
+    row = len(file2.read().split(b'\n')) - 1
 
-    tokens = sent_tokenize(file1.read())
-    for line in tokens:
-        file_docs.append(line)
+    sim_matrix = [[input() for i in range (col)] for j in range (row)]
+    i = j = 0
+    for line1 in file1:
+        for line2 in file2:
+            doc1 = nlp_latin(line1)
+            doc2 = nlp_latin(line1)
+            sim_matrix[i][j] = doc1.similarity(doc2)
+            j = j + 1
+        i = i + 1
 
-    length_doc1 = len(file_docs)
-
-    gen_docs = [[w.lower() for w in word_tokenize(text)]
-                for text in file_docs]
-
-    dictionary = gensim.corpora.Dictionary(gen_docs)
-    corpus = [dictionary.doc2bow(gen_doc) for gen_doc in gen_docs]
-    tf_idf = gensim.models.TfidfModel(corpus)
-    sims = gensim.similarities.Similarity('workdir/', tf_idf[corpus],
-                                          num_features=len(dictionary))
-
-    tokens = sent_tokenize(file2.read())
-    for line in tokens:
-        file2_docs.append(line)
-
-    for line in file2_docs:
-        query_doc = [w.lower() for w in word_tokenize(line)]
-        query_doc_bow = dictionary.doc2bow(query_doc)
-        query_doc_tf_idf = tf_idf[query_doc_bow]
-        print('Comparing Result:', sims[query_doc_tf_idf])
-        sum_of_sims = (np.sum(sims[query_doc_tf_idf], dtype=np.float32))
-        avg = sum_of_sims / len(file_docs)
-        print(f'avg: {sum_of_sims / len(file_docs)}')
-        avg_sims.append(avg)
-    total_avg = np.sum(avg_sims, dtype=np.float)
-    print(total_avg)
-    percentage_of_similarity = round(float(total_avg) * 100)
-    if percentage_of_similarity >= 100:
-        percentage_of_similarity = 100
-
-    return percentage_of_similarity
+    return sim_matrix
 
 
 def db(request):

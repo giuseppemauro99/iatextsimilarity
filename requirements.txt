@@ -1,7 +1,7 @@
 django
 gunicorn
 django-heroku
-nltk
+spacy
 gensim
 pymongo
 scipy>=0.18.1
