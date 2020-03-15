@@ -50,11 +50,11 @@ def uploadToMongoDB(file1,file2,request):
     text1_json = {'data': text_file1}
     text2_json = {'data': text_file2}
 
-    f1 = mydb["files"].insert_one(text1_json,bypass_document_validation=True)
-    f2 = mydb["files"].insert_one(text2_json,bypass_document_validation=True)
+    f1 = mydb["files"].insert_one(text1_json)
+    f2 = mydb["files"].insert_one(text2_json)
 
-    request.session['file1'] = f1.inserted_id
-    request.session['file2_query'] = f2.inserted_id
+    request.session['file1'] = str(f1.inserted_id)
+    request.session['file2_query'] = str(f2.inserted_id)
 
     return True
 
