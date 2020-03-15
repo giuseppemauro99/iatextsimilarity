@@ -63,7 +63,7 @@ def calculatesimilarity(request):
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': file2id})
 
     return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
-                                                        'similarity': similarityMatrix(file1, file2)})
+                                                        'sim_matrix': similarityMatrix(file1, file2)})
 
 
 def similarityMatrix(file1, file2):  # non so se funzia
