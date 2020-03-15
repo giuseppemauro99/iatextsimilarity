@@ -1,6 +1,5 @@
 from xml.dom.minidom import Document
 
-
 from bson import json_util, ObjectId
 import json
 import os
@@ -15,6 +14,9 @@ from nltk import sent_tokenize, word_tokenize
 from .models import Greeting
 from .forms import Form1
 
+myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI'))
+mydb = myclient.get_default_database()
+
 # Create your views here.
 def index(request):
     # if this is a POST request we need to process the form data
@@ -26,7 +28,7 @@ def index(request):
             # process the data in form.cleaned_data as required
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
-            uploadToMongoDB(request.FILES['file1'],request.FILES['file2_query'],request)
+            uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
 
@@ -36,9 +38,8 @@ def index(request):
 
     return render(request, 'index.html', {'form': form})
 
-def uploadToMongoDB(file1,file2,request):
-    myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI'))
-    mydb = myclient.get_default_database()
+
+def uploadToMongoDB(file1, file2, request):
 
     text_file1 = ""
     text_file2 = ""
@@ -58,22 +59,26 @@ def uploadToMongoDB(file1,file2,request):
 
     return True
 
+
 def calculatesimilarity(request):
     file1id = request.session['file1']
     file2id = request.session['file2_query']
 
-    return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id})
+    file1 = mydb.get_collection("files").find_one_and_delete(query={'_id': file1id})
+    file2 = mydb.get_collection("files").find_one_and_delete(query={'_id': file2id})
+
+    return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
+                                                        'similarity': similarity(file1, file2)})
 
 
-def similarity(request, id):
-    document = get_object_or_404(Document, id=id)
+def similarity(file1, file2):
     file_docs = []
     file2_docs = []
     avg_sims = []
-    with open('media/' + document.document.name) as f:
-        tokens = sent_tokenize(f.read())
-        for line in tokens:
-            file_docs.append(line)
+
+    tokens = sent_tokenize(file1.read())
+    for line in tokens:
+        file_docs.append(line)
 
     length_doc1 = len(file_docs)
 
@@ -86,10 +91,9 @@ def similarity(request, id):
     sims = gensim.similarities.Similarity('workdir/', tf_idf[corpus],
                                           num_features=len(dictionary))
 
-    with open('media/' + document.document2.name) as f:
-        tokens = sent_tokenize(f.read())
-        for line in tokens:
-            file2_docs.append(line)
+    tokens = sent_tokenize(file2.read())
+    for line in tokens:
+        file2_docs.append(line)
 
     for line in file2_docs:
         query_doc = [w.lower() for w in word_tokenize(line)]
@@ -106,13 +110,10 @@ def similarity(request, id):
     if percentage_of_similarity >= 100:
         percentage_of_similarity = 100
 
-    return render(request, 'document.html', {
-        'percentage_of_similarity': percentage_of_similarity,
-    })
+    return percentage_of_similarity
 
 
 def db(request):
-
     greeting = Greeting()
     greeting.save()
 
