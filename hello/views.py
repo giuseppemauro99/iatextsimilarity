@@ -74,10 +74,11 @@ def similarityMatrix(file1, file2):
     col = len(file1.split("\r\n"))+1
     row = len(file2.split("\r\n"))+1
 
+    #sim_matrix = [[0 for i in range(row)] for j in range(col)]
     sim_matrix = numpy.zeros(shape=(row, col))
     i = j = 0
-    for line1 in file1.splitlines():
-        for line2 in file2.splitlines():
+    for line1 in file1.split("\r\n"):
+        for line2 in file2.split("\r\n"):
             doc1 = nlp(line1)
             doc2 = nlp(line2)
             sim_matrix[i, j] = doc1.similarity(doc2)
