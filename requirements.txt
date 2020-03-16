@@ -3,6 +3,7 @@ gunicorn
 django-heroku
 spacy
 https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-2.2.5/it_core_news_sm-2.2.5.tar.gz
+numpy
 gensim
 pymongo
 scipy>=0.18.1
