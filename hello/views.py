@@ -71,8 +71,8 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2):
     nlp = spacy.load("it_core_news_sm")
     # bisogna risolvere il problema con la grandezza della matrice
-    col = len(file1.splitlines())+1
-    row = len(file2.splitlines())+1
+    col = len(file1.split("\r\n"))+1
+    row = len(file2.split("\r\n"))+1
 
     sim_matrix = numpy.zeros(shape=(row, col))
     i = j = 0
