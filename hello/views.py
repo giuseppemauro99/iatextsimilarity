@@ -70,7 +70,7 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2):  # non so se funzia
     nlp = spacy.load("it_core_news_sm")
     col = len(file1.splitlines())
-    row = len(file2.splitlines())
+    row = len(file2.splitlines())+1
 
     sim_matrix = [[0 for i in range(row)] for j in range(col)]
     i = j = 0
