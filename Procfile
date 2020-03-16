@@ -1,1 +1,2 @@
-web: gunicorn gettingstarted.wsgi --timeout 120 --log-level=debug --workers=3
+#web: gunicorn gettingstarted.wsgi --log-level=debug
+web: waitress-serve --port=$PORT gettingstarted.wsgi:application
