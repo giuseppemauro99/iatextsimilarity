@@ -71,11 +71,11 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2):
     nlp = spacy.load("it_core_news_sm")
     # bisogna risolvere il problema con la grandezza della matrice
-    reader = csv.reader(file1, delimiter="\r\n")
+    reader = csv.reader(file1, delimiter="\n")
     data = list(reader)
     col = len(data)
 
-    reader = csv.reader(file2, delimiter="\r\n")
+    reader = csv.reader(file2, delimiter="\n")
     data = list(reader)
     row = len(data)
 
