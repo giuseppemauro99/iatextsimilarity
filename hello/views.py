@@ -25,10 +25,23 @@ def index(request):
         form = Form1(request.POST, request.FILES)
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
+            # process file to DB
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
             uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
+            #process label
+            request.session["label1"] = form.label1
+            request.session["label1_start"] = float(str(form.label1_interval).split("-")[0])
+            request.session["label1_finish"] = float(str(form.label1_interval).split("-")[1])
+
+            request.session["label2"] = form.label2
+            request.session["label2_start"] = float(str(form.label2_interval).split("-")[0])
+            request.session["label2_finish"] = float(str(form.label2_interval).split("-")[1])
+
+            request.session["label3"] = form.label3
+            request.session["label3_start"] = float(str(form.label3_interval).split("-")[0])
+            request.session["label3_finish"] = float(str(form.label3_interval).split("-")[1])
+
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
 
@@ -67,13 +80,13 @@ def calculatesimilarity(request):
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
     start = datetime.datetime.now()
-    sim_matrix = similarityMatrix(file1, file2)
+    sim_matrix = similarityMatrix(file1, file2,request)
     finish = datetime.datetime.now()
 
     return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (finish-start), 'sim_matrix': sim_matrix})
 
 
-def similarityMatrix(file1, file2):
+def similarityMatrix(file1, file2,request):
     nlp = spacy.load("it_core_news_sm")
     buf1 = io.StringIO(file1)
     lines1 = buf1.readlines()
@@ -90,12 +103,23 @@ def similarityMatrix(file1, file2):
         for line2 in lines2:
             doc1 = nlp(line1)
             doc2 = nlp(line2)
-            sim_matrix[i, j] = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
+            val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
+            sim_matrix[i, j] = val2Label(val,request)
             j = j + 1
         i = i + 1
 
     return sim_matrix
 
+def val2Label(val,request):
+
+    if request.session["label1_start"] <= val < request.session["label1_finish"]:
+        return request.session["label1"]
+    if request.session["label2_start"] <= val < request.session["label2_finish"]:
+        return request.session["label2"]
+    if request.session["label3_start"] <= val < request.session["label3_finish"]:
+        return request.session["label3"]
+
+    return str(val)
 
 def db(request):
     greeting = Greeting()
