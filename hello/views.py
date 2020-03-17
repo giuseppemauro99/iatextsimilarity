@@ -70,7 +70,7 @@ def calculatesimilarity(request):
     sim_matrix = similarityMatrix(file1, file2)
     finish = datetime.datetime.now()
 
-    return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (start-finish), 'sim_matrix': sim_matrix})
+    return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (finish-start), 'sim_matrix': sim_matrix})
 
 
 def similarityMatrix(file1, file2):
