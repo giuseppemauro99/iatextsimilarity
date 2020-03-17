@@ -1,4 +1,5 @@
 import csv
+import datetime
 import math
 
 import numpy
@@ -65,8 +66,11 @@ def calculatesimilarity(request):
     file1 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file1id)})["data"]
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
-    return render(request, 'calculatesimilarity.html', {'id_file1': file1id, 'id_file2': file2id,
-                                                        'sim_matrix': similarityMatrix(file1, file2)})
+    start = datetime.datetime.now()
+    sim_matrix = similarityMatrix(file1, file2)
+    finish = datetime.datetime.now()
+
+    return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (start-finish), 'sim_matrix': sim_matrix})
 
 
 def similarityMatrix(file1, file2):
