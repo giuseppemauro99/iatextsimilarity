@@ -73,11 +73,11 @@ def similarityMatrix(file1, file2):
     # bisogna risolvere il problema con la grandezza della matrice
     reader = csv.reader(file1)
     data = list(reader)
-    col = len(data)
+    row = len(data)
 
     reader = csv.reader(file2)
     data = list(reader)
-    row = len(data)
+    col = len(data)
 
     #sim_matrix = [[0 for i in range(row)] for j in range(col)]
     sim_matrix = numpy.zeros(shape=(row, col))
