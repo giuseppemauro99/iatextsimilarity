@@ -96,7 +96,7 @@ def similarityMatrix(file1, file2,request):
     lines2 = buf2.readlines()
     col = len(lines2)
 
-    sim_matrix = numpy.zeros(shape=(row, col))
+    sim_matrix = numpy.chararray((row, col))
     i = j = 0
     for line1 in lines1:
         j = 0
