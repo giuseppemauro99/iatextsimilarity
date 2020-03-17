@@ -100,13 +100,19 @@ def similarityMatrix(file1, file2,request):
 
     sim_matrix = [["string" for x in range(row)] for y in range(col)]
     i = j = 0
+
     for line1 in lines1:
         j = 0
         for line2 in lines2:
-            doc1 = nlp(line1)
-            doc2 = nlp(line2)
-            val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
-            sim_matrix[i][j] = val2Label(val, request)
+            if i==0:
+                sim_matrix[i][j] = line2
+            elif j==0:
+                sim_matrix[i][j] = line1
+            else:
+                doc1 = nlp(line1)
+                doc2 = nlp(line2)
+                val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
+                sim_matrix[i][j] = val2Label(val, request)
             j = j + 1
         i = i + 1
 
