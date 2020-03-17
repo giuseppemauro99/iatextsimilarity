@@ -8,10 +8,13 @@
 <br/>
 <h2>Similarity: </h2>
 {% for row in sim_matrix %}
-    {% for cell in row %}
-        {{ cell }}
-    {% endfor %}
-    <br/>
+    <tr>
+        {% for cell in row %}
+            <td>
+                {{ cell }}
+            </td>
+        {% endfor %}
+    </tr>
 {% endfor %}
 
 {% endblock %}
