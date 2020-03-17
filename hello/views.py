@@ -105,7 +105,9 @@ def similarityMatrix(file1, file2, request):
     for line1 in lines1:
         j = 0
         for line2 in lines2:
-            if i == 0:
+            if i == 0 and j == 0:
+                continue
+            elif i == 0:
                 sim_matrix[i][j] = line2
             elif j == 0:
                 sim_matrix[i][j] = line1
