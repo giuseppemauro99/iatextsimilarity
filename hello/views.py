@@ -1,14 +1,13 @@
 import csv
 import datetime
-import math
-
-import numpy
+from datetime import datetime
 import spacy
 import os,io
 import pymongo as pymongo
 from bson import ObjectId
+from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 
 from .models import Greeting
 from .forms import Form1
@@ -88,7 +87,7 @@ def calculatesimilarity(request):
 
 def similarityMatrix(file1, file2,request):
     nlp = spacy.load("it_core_news_sm")
-    
+
     buf1 = io.StringIO(file1)
     lines1 = buf1.readlines()
     row = len(lines1)
@@ -109,6 +108,12 @@ def similarityMatrix(file1, file2,request):
             j = j + 1
         i = i + 1
 
+    request.session["csv_file"] = str(datetime.now()) + ".csv"
+    with open(request.session["csv_file"], mode='w') as csv_file:
+        csv_file = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for line in sim_matrix:
+            csv_file.writerow(line)
+
     return sim_matrix
 
 def val2Label(val,request):
@@ -121,6 +126,17 @@ def val2Label(val,request):
         return request.session["label3"]
 
     return val
+
+def download_csv(request):
+    filapath = "./"+request.session["csv_file"]
+    file_path = os.path.join(settings.MEDIA_ROOT, filapath)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+
 
 def db(request):
     greeting = Greeting()
