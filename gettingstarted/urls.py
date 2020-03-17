@@ -18,5 +18,6 @@ urlpatterns = [
     path("", hello.views.index, name="index"),
     path("db/", hello.views.db, name="db"),
     path("admin/", admin.site.urls),
-    path("calculatesimilarity/", hello.views.calculatesimilarity, name="calculatesimilarity")
+    path("calculatesimilarity/", hello.views.calculatesimilarity, name="calculatesimilarity"),
+    path("download_csv/", hello.views.download_csv, name="download_csv")
 ]
