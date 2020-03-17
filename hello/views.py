@@ -2,7 +2,7 @@ import csv
 
 import numpy
 import spacy
-import os
+import os,io
 import pymongo as pymongo
 from bson import ObjectId
 from django.shortcuts import render
@@ -71,12 +71,12 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2):
     nlp = spacy.load("it_core_news_sm")
     # bisogna risolvere il problema con la grandezza della matrice
-    row = 0
-    lines1 = file1.readlines()
+    buf1 = io.StringIO(file1)
+    lines1 = buf1.readlines()
     row = len(lines1)
 
-    col = 0
-    lines2 = file2.readlines()
+    buf2 = io.StringIO(file2)
+    lines2 = buf2.readlines()
     col = len(lines2)
 
     #sim_matrix = [[0 for i in range(row)] for j in range(col)]
