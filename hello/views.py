@@ -30,17 +30,17 @@ def index(request):
             request.session['file2_query'] = request.FILES['file2_query']
             uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
             #process label
-            request.session["label1"] = form.label1
-            request.session["label1_start"] = float(str(form.label1_interval).split("-")[0])
-            request.session["label1_finish"] = float(str(form.label1_interval).split("-")[1])
+            request.session["label1"] = form.cleaned_data["label1"]
+            request.session["label1_start"] = float(str(form.cleaned_data["label1_interval"]).split("-")[0])
+            request.session["label1_finish"] = float(str(form.cleaned_data["label1_interval"]).split("-")[1])
 
-            request.session["label2"] = form.label2
-            request.session["label2_start"] = float(str(form.label2_interval).split("-")[0])
-            request.session["label2_finish"] = float(str(form.label2_interval).split("-")[1])
+            request.session["label2"] = form.cleaned_data["label2"]
+            request.session["label2_start"] = float(str(form.cleaned_data["label1_interval2"]).split("-")[0])
+            request.session["label2_finish"] = float(str(form.cleaned_data["label1_interval2"]).split("-")[1])
 
-            request.session["label3"] = form.label3
-            request.session["label3_start"] = float(str(form.label3_interval).split("-")[0])
-            request.session["label3_finish"] = float(str(form.label3_interval).split("-")[1])
+            request.session["label3"] = form.cleaned_data["label3"]
+            request.session["label3_start"] = float(str(form.cleaned_data["label1_interval3"]).split("-")[0])
+            request.session["label3_finish"] = float(str(form.cleaned_data["label1_interval3"]).split("-")[1])
 
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
