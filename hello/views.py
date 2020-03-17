@@ -110,8 +110,8 @@ def similarityMatrix(file1, file2,request):
             j = j + 1
         i = i + 1
 
-    f = request.session["csv_file"] = open(str(datetime.now()) + ".csv", mode='w')
-    with f as csv_file:
+    request.session["csv_file"] = str(datetime.now()) + ".csv"
+    with open(request.session["csv_file"], mode='w') as csv_file:
         csv_file = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for line in sim_matrix:
             csv_file.writerow(line)
@@ -131,10 +131,10 @@ def val2Label(val,request):
     return val
 
 def download_csv(request):
-
-    response = HttpResponse(FileWrapper(request.session["csv_file"].getvalue()), content_type='application/csv')
-    response['Content-Disposition'] = 'attachment; filename=myfile.csv'
-    return response
+    with open(request.session["csv_file"]) as myfile:
+        response = HttpResponse(myfile, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename='+request.session["csv_file"]
+        return response
 
 
 def db(request):
