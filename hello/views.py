@@ -84,6 +84,8 @@ def similarityMatrix(file1, file2):
     i = j = 0
     for line1 in csv.reader(file1):
         for line2 in csv.reader(file2):
+            line1 = str(line1)
+            line2 = str(line2)
             doc1 = nlp(line1)
             doc2 = nlp(line2)
             sim_matrix[i, j] = doc1.similarity(doc2)
