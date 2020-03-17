@@ -31,16 +31,16 @@ def index(request):
             uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
             #process label
             request.session["label1"] = form.cleaned_data["label1"]
-            request.session["label1_start"] = float(str(form.cleaned_data["label1_interval"]).split("-")[0])
-            request.session["label1_finish"] = float(str(form.cleaned_data["label1_interval"]).split("-")[1])
+            request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
+            request.session["label1_finish"] = str(form.cleaned_data["label1_interval"]).split("-")[1]
 
             request.session["label2"] = form.cleaned_data["label2"]
-            request.session["label2_start"] = float(str(form.cleaned_data["label2_interval"]).split("-")[0])
-            request.session["label2_finish"] = float(str(form.cleaned_data["label2_interval"]).split("-")[1])
+            request.session["label2_start"] = str(form.cleaned_data["label2_interval"]).split("-")[0]
+            request.session["label2_finish"] = str(form.cleaned_data["label2_interval"]).split("-")[1]
 
             request.session["label3"] = form.cleaned_data["label3"]
-            request.session["label3_start"] = float(str(form.cleaned_data["label3_interval"]).split("-")[0])
-            request.session["label3_finish"] = float(str(form.cleaned_data["label3_interval"]).split("-")[1])
+            request.session["label3_start"] = str(form.cleaned_data["label3_interval"]).split("-")[0]
+            request.session["label3_finish"] = str(form.cleaned_data["label3_interval"]).split("-")[1]
 
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
@@ -112,11 +112,11 @@ def similarityMatrix(file1, file2,request):
 
 def val2Label(val,request):
 
-    if request.session["label1_start"] <= val < request.session["label1_finish"]:
+    if float(request.session["label1_start"]) <= val < float(request.session["label1_finish"]):
         return request.session["label1"]
-    if request.session["label2_start"] <= val < request.session["label2_finish"]:
+    if float(request.session["label2_start"]) <= val < float(request.session["label2_finish"]):
         return request.session["label2"]
-    if request.session["label3_start"] <= val < request.session["label3_finish"]:
+    if float(request.session["label3_start"]) <= val < float(request.session["label3_finish"]):
         return request.session["label3"]
 
     return str(val)
