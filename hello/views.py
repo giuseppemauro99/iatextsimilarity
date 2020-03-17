@@ -35,12 +35,12 @@ def index(request):
             request.session["label1_finish"] = float(str(form.cleaned_data["label1_interval"]).split("-")[1])
 
             request.session["label2"] = form.cleaned_data["label2"]
-            request.session["label2_start"] = float(str(form.cleaned_data["label1_interval2"]).split("-")[0])
-            request.session["label2_finish"] = float(str(form.cleaned_data["label1_interval2"]).split("-")[1])
+            request.session["label2_start"] = float(str(form.cleaned_data["label2_interval"]).split("-")[0])
+            request.session["label2_finish"] = float(str(form.cleaned_data["label2_interval"]).split("-")[1])
 
             request.session["label3"] = form.cleaned_data["label3"]
-            request.session["label3_start"] = float(str(form.cleaned_data["label1_interval3"]).split("-")[0])
-            request.session["label3_finish"] = float(str(form.cleaned_data["label1_interval3"]).split("-")[1])
+            request.session["label3_start"] = float(str(form.cleaned_data["label3_interval"]).split("-")[0])
+            request.session["label3_finish"] = float(str(form.cleaned_data["label3_interval"]).split("-")[1])
 
             # redirect to a new URL:
             return HttpResponseRedirect('/calculatesimilarity/')
