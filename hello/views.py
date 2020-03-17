@@ -114,12 +114,12 @@ def val2Label(val,request):
 
     if float(request.session["label1_start"]) <= float(val) < float(request.session["label1_finish"]):
         return request.session["label1"]
-    if float(request.session["label2_start"]) <= float(va)l < float(request.session["label2_finish"]):
+    if float(request.session["label2_start"]) <= float(val) < float(request.session["label2_finish"]):
         return request.session["label2"]
     if float(request.session["label3_start"]) <= float(val) < float(request.session["label3_finish"]):
         return request.session["label3"]
 
-    return str(val)
+    return val
 
 def db(request):
     greeting = Greeting()
