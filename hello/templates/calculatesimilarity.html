@@ -6,14 +6,16 @@
 <h1>Tempo di esecuzione: {{ tempo_di_esecuzione }}</h1>
 <br/>
 <h2>Similarity: </h2>
-{% for row in sim_matrix %}
-    <tr>
-        {% for cell in row %}
-            <td>
-                {{ cell }}
-            </td>
-        {% endfor %}
-    </tr>
-{% endfor %}
+<table>
+    {% for row in sim_matrix %}
+        <tr>
+            {% for cell in row %}
+                <td>
+                    {{ cell }}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}
