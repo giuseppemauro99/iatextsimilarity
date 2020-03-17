@@ -4,7 +4,7 @@ from datetime import datetime
 from wsgiref.util import FileWrapper
 
 import spacy
-import os, io
+import os,io
 import pymongo as pymongo
 from bson import ObjectId
 from django.conf import settings
@@ -30,7 +30,7 @@ def index(request):
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
             uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
-            # process label
+            #process label
             request.session["label1"] = form.cleaned_data["label1"]
             request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
             request.session["label1_finish"] = str(form.cleaned_data["label1_interval"]).split("-")[1]
@@ -81,14 +81,13 @@ def calculatesimilarity(request):
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
     start = datetime.now()
-    sim_matrix = similarityMatrix(file1, file2, request)
+    sim_matrix, colth, rowth = similarityMatrix(file1, file2, request)
     finish = datetime.now()
 
-    return render(request, 'calculatesimilarity.html',
-                  {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix})
+    return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (finish-start), 'sim_matrix': sim_matrix})
 
 
-def similarityMatrix(file1, file2, request):
+def similarityMatrix(file1, file2,request):
     nlp = spacy.load("it_core_news_sm")
 
     buf1 = io.StringIO(file1)
@@ -105,24 +104,17 @@ def similarityMatrix(file1, file2, request):
     for line1 in lines1:
         j = 0
         for line2 in lines2:
-            if i == 0 and j == 0:
-                continue
-            elif i == 0:
-                sim_matrix[i][j] = line2
-            elif j == 0:
-                sim_matrix[i][j] = line1
-            else:
-                doc1 = nlp(line1)
-                doc2 = nlp(line2)
-                val = f"{(doc1.similarity(doc2) * 100) :.2f}"  # calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
-                sim_matrix[i][j] = val2Label(val, request)
+            doc1 = nlp(line1)
+            doc2 = nlp(line2)
+            val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
+            sim_matrix[i][j] = val2Label(val, request)
             j = j + 1
         i = i + 1
 
-    return sim_matrix
+    return sim_matrix, lines1, lines2
 
+def val2Label(val,request):
 
-def val2Label(val, request):
     if float(request.session["label1_start"]) <= float(val) < float(request.session["label1_finish"]):
         return request.session["label1"]
     if float(request.session["label2_start"]) <= float(val) < float(request.session["label2_finish"]):
@@ -131,7 +123,6 @@ def val2Label(val, request):
         return request.session["label3"]
 
     return val
-
 
 def db(request):
     greeting = Greeting()
