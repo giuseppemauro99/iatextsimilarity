@@ -104,7 +104,7 @@ def similarityMatrix(file1, file2,request):
             doc1 = nlp(line1)
             doc2 = nlp(line2)
             val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
-            sim_matrix[i, j] = val2Label(val,request)
+            sim_matrix[i, j] = val2Label(val, request)
             j = j + 1
         i = i + 1
 
