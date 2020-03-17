@@ -1,4 +1,4 @@
-from xml.dom.minidom import Document
+import csv
 
 import numpy
 import spacy
@@ -71,8 +71,14 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2):
     nlp = spacy.load("it_core_news_sm")
     # bisogna risolvere il problema con la grandezza della matrice
-    col = sum(1 for i in file1)+1
-    row = sum(1 for i in file1)+1
+    reader = csv.reader(file1, delimiter="\r\n")
+    data = list(reader)
+    col = len(data)
+
+    reader = csv.reader(file2, delimiter="\r\n")
+    data = list(reader)
+    row = len(data)
+
 
     #sim_matrix = [[0 for i in range(row)] for j in range(col)]
     sim_matrix = numpy.zeros(shape=(row, col))
