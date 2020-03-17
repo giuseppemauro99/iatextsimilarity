@@ -88,6 +88,7 @@ def calculatesimilarity(request):
 
 def similarityMatrix(file1, file2,request):
     nlp = spacy.load("it_core_news_sm")
+    
     buf1 = io.StringIO(file1)
     lines1 = buf1.readlines()
     row = len(lines1)
@@ -96,7 +97,7 @@ def similarityMatrix(file1, file2,request):
     lines2 = buf2.readlines()
     col = len(lines2)
 
-    sim_matrix = numpy.chararray((row, col))
+    sim_matrix = [["string" for x in range(row)] for y in range(col)]
     i = j = 0
     for line1 in lines1:
         j = 0
@@ -104,7 +105,7 @@ def similarityMatrix(file1, file2,request):
             doc1 = nlp(line1)
             doc2 = nlp(line2)
             val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
-            sim_matrix[i, j] = val2Label(val, request)
+            sim_matrix[i][j] = val2Label(val, request)
             j = j + 1
         i = i + 1
 
