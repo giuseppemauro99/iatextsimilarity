@@ -1,6 +1,8 @@
 import csv
 import datetime
 from datetime import datetime
+from wsgiref.util import FileWrapper
+
 import spacy
 import os,io
 import pymongo as pymongo
@@ -108,8 +110,8 @@ def similarityMatrix(file1, file2,request):
             j = j + 1
         i = i + 1
 
-    request.session["csv_file"] = str(datetime.now()) + ".csv"
-    with open(request.session["csv_file"], mode='w') as csv_file:
+    f = request.session["csv_file"] = open(str(datetime.now()) + ".csv", mode='w')
+    with f as csv_file:
         csv_file = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for line in sim_matrix:
             csv_file.writerow(line)
@@ -129,13 +131,10 @@ def val2Label(val,request):
     return val
 
 def download_csv(request):
-    file_path = os.path.join(request.session["csv_filepath"])
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-            return response
-    raise Http404
+
+    response = HttpResponse(FileWrapper(request.session["csv_file"].getvalue()), content_type='application/csv')
+    response['Content-Disposition'] = 'attachment; filename=myfile.csv'
+    return response
 
 
 def db(request):
