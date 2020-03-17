@@ -92,15 +92,11 @@ def similarityMatrix(file1, file2):
         for line2 in lines2:
             doc1 = nlp(line1)
             doc2 = nlp(line2)
-            sim_matrix[i, j] = float(truncate(doc1.similarity(doc2), 3)*100)
+            sim_matrix[i, j] = f"{ (doc1.similarity(doc2)*100) :.2f}"
             j = j + 1
         i = i + 1
 
     return sim_matrix
-
-def truncate(number, digits) -> float:
-    stepper = 10.0 ** digits
-    return math.trunc(stepper * number) / stepper
 
 
 def db(request):
