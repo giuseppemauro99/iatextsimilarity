@@ -74,7 +74,7 @@ def calculatesimilarity(request):
 
 
 def similarityMatrix(file1, file2):
-    nlp = spacy.load("it_vectors_wiki_lg")
+    nlp = spacy.load("it_core_news_sm")
     buf1 = io.StringIO(file1)
     lines1 = buf1.readlines()
     row = len(lines1)

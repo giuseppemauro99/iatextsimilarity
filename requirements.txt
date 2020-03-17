@@ -4,7 +4,6 @@ gunicorn
 django-heroku
 spacy
 https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-2.2.5/it_core_news_sm-2.2.5.tar.gz
-#https://github.com/MartinoMensio/it_vectors_wiki_spacy/releases/download/v1.0/it_vectors_wiki_lg-1.0.0.tar.gz
 numpy
 gensim
 pymongo
