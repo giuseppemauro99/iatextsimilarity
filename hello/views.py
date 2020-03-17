@@ -115,7 +115,6 @@ def similarityMatrix(file1, file2,request):
         csv_file = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for line in sim_matrix:
             csv_file.writerow(line)
-        request.session["csv_filepath"] = csv_file.name
 
     return sim_matrix
 
