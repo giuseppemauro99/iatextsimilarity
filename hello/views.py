@@ -75,7 +75,6 @@ def calculatesimilarity(request):
 
 def similarityMatrix(file1, file2):
     nlp = spacy.load("it_vectors_wiki_lg")
-    # bisogna risolvere il problema con la grandezza della matrice
     buf1 = io.StringIO(file1)
     lines1 = buf1.readlines()
     row = len(lines1)
@@ -84,7 +83,6 @@ def similarityMatrix(file1, file2):
     lines2 = buf2.readlines()
     col = len(lines2)
 
-    #sim_matrix = [[0 for i in range(row)] for j in range(col)]
     sim_matrix = numpy.zeros(shape=(row, col))
     i = j = 0
     for line1 in lines1:
@@ -92,7 +90,7 @@ def similarityMatrix(file1, file2):
         for line2 in lines2:
             doc1 = nlp(line1)
             doc2 = nlp(line2)
-            sim_matrix[i, j] = f"{ (doc1.similarity(doc2)*100) :.2f}"
+            sim_matrix[i, j] = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
             j = j + 1
         i = i + 1
 
