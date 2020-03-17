@@ -80,7 +80,7 @@ def similarityMatrix(file1, file2):
     col = len(lines2)
 
     #sim_matrix = [[0 for i in range(row)] for j in range(col)]
-    sim_matrix = numpy.zeros(shape=(row+1, col+1))
+    sim_matrix = numpy.zeros(shape=(row, col))
     i = j = 0
     for line1 in lines1:
         j = 0
