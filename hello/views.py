@@ -78,9 +78,9 @@ def calculatesimilarity(request):
     file1 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file1id)})["data"]
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
-    start = datetime.datetime.now()
+    start = datetime.now()
     sim_matrix = similarityMatrix(file1, file2,request)
-    finish = datetime.datetime.now()
+    finish = datetime.now()
 
     return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (finish-start), 'sim_matrix': sim_matrix})
 
@@ -113,6 +113,7 @@ def similarityMatrix(file1, file2,request):
         csv_file = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for line in sim_matrix:
             csv_file.writerow(line)
+        request.session["csv_filepath"] = csv_file.name
 
     return sim_matrix
 
@@ -128,8 +129,7 @@ def val2Label(val,request):
     return val
 
 def download_csv(request):
-    filapath = "./"+request.session["csv_file"]
-    file_path = os.path.join(settings.MEDIA_ROOT, filapath)
+    file_path = os.path.join(request.session["csv_filepath"])
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
