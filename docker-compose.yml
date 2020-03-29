@@ -16,7 +16,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mongoadmin
       MONGO_INITDB_DATABASE: django_mongodb_docker
-      MONGO_DB_URI: mongodb://root:mongoadmin@mongo:27017
+      MONGO_DB_URI: mongodb://root:mongoadmin@mongodb:27017
     ports:
       - 27017:27017
 
@@ -43,6 +43,7 @@ services:
     links:
       - mongodb
     depends_on:
+      - mongodb
       - migration
 
   migration:
