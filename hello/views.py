@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1
 
-myclient = pymongo.MongoClient(os.environ.get('MONGODB_URI'))
+myclient = pymongo.MongoClient(os.environ.get('MONGO_DB_URI'))
 mydb = myclient.get_default_database()
 
 
