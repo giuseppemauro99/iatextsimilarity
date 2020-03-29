@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  databse:
+    image: 'mongo'
+    container_name: 'mongodb-container'
+    environment:
+      - MONGO_INITDB_DATABASE=mongodb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - '27017-27019':'27017-27019'
+  web:
+    build: .
+    command: gunicorn gettingstarted.wsgi --log-level=debug --workers=7 --timeout=2400
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - databse
