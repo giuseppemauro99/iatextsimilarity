@@ -6,7 +6,7 @@ volumes:
 
 services:
   mongodb:
-    container_name: mongo
+    container_name: mongodb
     image: mongo
     restart: always
     volumes:
@@ -17,6 +17,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongoadmin
       MONGO_INITDB_DATABASE: django_mongodb_docker
       MONGO_DB_URI: mongodb://root:mongoadmin@mongodb:27017
+    net:
+      bindIp 0.0.0.0
     ports:
       - 27017:27017
 
