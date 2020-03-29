@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django',
         'ENFORCE_SCHEMA': True,
         'NAME': 'django_mongodb_docker',
-        'HOST': 'mongodb',
+        'HOST': 'mongo',
         'PORT': 27017,
         'USER': 'root',
         'PASSWORD': 'mongoadmin',

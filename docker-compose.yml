@@ -5,7 +5,7 @@ volumes:
   data-db:
 
 services:
-  mongodb:
+  mongo:
     image: mongo
     restart: always
     volumes:
@@ -15,7 +15,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mongoadmin
       MONGO_INITDB_DATABASE: django_mongodb_docker
-      MONGO_DB_URI: mongodb://root:mongoadmin@mongodb:27017
+      MONGO_DB_URI: mongodb://root:mongoadmin@mongo:27017
     ports:
       - 27017:27017
 
@@ -29,7 +29,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongoadmin
     links:
-      - mongodb
+      - mongo
 
   web:
     image: app
@@ -40,9 +40,9 @@ services:
     ports:
       - 8000:8000
     links:
-      - mongodb
+      - mongo
     depends_on:
-      - mongodb
+      - mongo
       - migration
 
   migration:
@@ -52,7 +52,7 @@ services:
     volumes:
       - .:/gettingstarted
     links:
-      - mongodb
+      - mongo
     depends_on:
       - make_migrations
 
@@ -63,7 +63,7 @@ services:
     volumes:
       - .:/gettingstarted
     links:
-      - mongodb
+      - mongo
     depends_on:
-      - mongodb
+      - mongo
 
