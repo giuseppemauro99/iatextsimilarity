@@ -15,7 +15,7 @@ from .models import Greeting
 from .forms import Form1
 
 myclient = pymongo.MongoClient(os.environ.get('MONGO_DB_URI'))
-mydb = myclient.get_default_database()
+mydb = myclient["django_mongodb_docker"]
 
 
 # Create your views here.
