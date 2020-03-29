@@ -1,23 +1,64 @@
-version: '3'
+version: '3.1'
+
+volumes:
+  init-db:
+  data-db:
 
 services:
-  databse:
-    image: 'mongo'
-    container_name: 'mongodb-container'
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - ./data-db:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=mongodb
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
-    volumes:
-      - ./mongo-volume:/data/db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
+      MONGO_INITDB_DATABASE: django_mongodb_docker
     ports:
-      - '27017-27019':'27017-27019'
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongoadmin
+
   web:
-    build: .
-    command: gunicorn gettingstarted.wsgi --log-level=debug --workers=7 --timeout=2400
+    image: app
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - .:/django_mongodb_docker
     ports:
-      - "8000:8000"
+      - 8000:8000
+    links:
+      - mongodb
     depends_on:
-      - databse
+      - migration
+
+  migration:
+    build: .
+    image: app
+    command: python manage.py migrate
+    volumes:
+      - .:/django_mongodb_docker
+    links:
+      - mongodb
+    depends_on:
+      - make_migrations
+
+  make_migrations:
+    build: .
+    image: app
+    command: python manage.py makemigrations
+    volumes:
+      - .:/django_mongodb_docker
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+
