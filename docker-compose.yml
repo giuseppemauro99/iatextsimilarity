@@ -30,7 +30,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongoadmin
     links:
-      - "mongo"
+      - mongodb
 
   web:
     image: app
