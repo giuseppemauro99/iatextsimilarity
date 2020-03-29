@@ -78,17 +78,8 @@ WSGI_APPLICATION = "gettingstarted.wsgi.application"
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django',
-        'ENFORCE_SCHEMA': True,
-        'NAME': 'django_mongodb_docker',
-        'HOST': 'mongo',
-        'PORT': 27017,
-        'USER': 'root',
-        'PASSWORD': 'mongoadmin',
-        'AUTH_SOURCE': 'admin',
-        'AUTH_MECHANISM': 'SCRAM-SHA-1',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
