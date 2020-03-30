@@ -78,9 +78,9 @@ services:
     depends_on:
       - mongo
 
-  networks:
-    frontend:
-      driver: bridge
-    backend:
-      driver: bridge
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
 
