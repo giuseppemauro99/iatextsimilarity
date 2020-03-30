@@ -14,8 +14,10 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1
 
-myclient = pymongo.MongoClient(os.environ.get('MONGO_DB_URI'))
-mydb = myclient["django_mongodb_docker"]
+MONGO_DB_URI = 'mongodb://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
+
+myclient = pymongo.MongoClient(MONGO_DB_URI)
+mydb = myclient["django_mongodb"]
 
 
 # Create your views here.

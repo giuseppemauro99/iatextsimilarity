@@ -14,10 +14,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mongoadmin
-      MONGO_INITDB_DATABASE: django_mongodb_docker
-      MONGO_DB_URI: mongodb://root:mongoadmin@mongo:27017
+      MONGO_INITDB_DATABASE: django_mongodb
     ports:
       - 27017:27017
+    networks:
+      - backend
 
   mongo-express:
     container_name: mongo-express
@@ -30,11 +31,18 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongoadmin
     links:
       - mongo
+    networks:
+      - backend
 
   web:
     image: app
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      MONGODB_DATABASE: django_mongodb
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: mongoadmin
+      MONGODB_HOSTNAME: mongodb
     volumes:
       - .:/gettingstarted
     ports:
@@ -44,6 +52,9 @@ services:
     depends_on:
       - mongo
       - migration
+    networks:
+      - frontend
+      - backend
 
   migration:
     build: .
@@ -66,4 +77,10 @@ services:
       - mongo
     depends_on:
       - mongo
+
+  networks:
+    frontend:
+      driver: bridge
+    backend:
+      driver: bridge
 
