@@ -1,8 +1,14 @@
 version: '3.1'
 
+volumes:
+  # default dir on Ubuntu: /var/lib/docker/volumes
+  mongodb:
+  mongoconfig:
+
+
 services:
   web:
-    image: app
+    image: python
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
     environment:
@@ -14,13 +20,14 @@ services:
       - .:/gettingstarted
     ports:
       - 8000:8000
+    links:
+      - mongodb
     networks:
       - backend
-      - frontend
 
-  my-mongodb:
+  mongodb:
     image: mongo:4.2.3-bionic
-    container_name: my-mongodb
+    container_name: my-mongodb-container
     ports:
       - 27017:27017
     environment:
@@ -36,7 +43,7 @@ services:
     networks:
       - backend
 
-  networks:
-    backend:
-      driver: bridge
+networks:
+  backend:
+    driver: bridge
 
