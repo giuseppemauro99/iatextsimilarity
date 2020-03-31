@@ -1,6 +1,18 @@
 version: '3.1'
 
 services:
+  mongodb:
+    image: 'bitnami/mongodb:latest'
+    environment:
+      MONGODB_ROOT_PASSWORD: root
+      MONGODB_USERNAME: my_user
+      MONGODB_PASSWORD: user
+      MONGODB_DATABASE: django_mongodb
+      ALLOW_EMPTY_PASSWORD: yes
+      MONGODB_EXTRA_FLAGS: --wiredTigerCacheSizeGB=2
+    networks:
+      - app-tier
+
   web:
     image: app
     restart: always
@@ -14,4 +26,6 @@ services:
       - .:/gettingstarted
     ports:
       - 8000:8000
+    networks:
+      - app-tier
 
