@@ -14,6 +14,4 @@ services:
       - .:/gettingstarted
     ports:
       - 8000:8000
-    links:
-      - mongo
 
