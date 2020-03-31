@@ -8,9 +8,8 @@ volumes:
 
 services:
   web:
-    image: python
+    build: .
     restart: always
-    command: python manage.py runserver 0.0.0.0:8000
     environment:
       MONGODB_DATABASE: django_mongodb
       MONGODB_USERNAME: root
