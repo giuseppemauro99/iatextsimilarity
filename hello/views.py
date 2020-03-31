@@ -18,6 +18,7 @@ from .forms import Form1
 MONGO_DB_URI = "mongodb://"+os.environ.get("MONGO_INITDB_ROOT_USERNAME")+":"+os.environ.get("MONGO_INITDB_ROOT_PASSWORD")+"@"+"mongodb"+":27017"
 
 myclient = pymongo.MongoClient(MONGO_DB_URI)
+#mydb = myclient["heroku_166t21vc"]
 mydb = myclient["django_db"]
 
 
