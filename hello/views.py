@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1
 
-MONGO_DB_URI = 'mongodb://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
+MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
 
 myclient = pymongo.MongoClient(MONGO_DB_URI)
 mydb = myclient["django_mongodb"]

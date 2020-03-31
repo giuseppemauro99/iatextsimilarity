@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
-CMD [ "gunicorn", "-w", "4", "--bind", "0.0.0.0:8000", "wsgi"]
+CMD [ "gunicorn", "-w", "4", "--bind_ip_all", "0.0.0.0:8000", "wsgi"]
