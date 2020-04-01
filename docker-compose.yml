@@ -32,8 +32,8 @@ services:
       - 27017:27017
     environment:
       - MONGO_INITDB_DATABASE=django_db
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongoadmin
     volumes:
       # seeding scripts
       - ./mongo-entrypoint:/docker-entrypoint-initdb.d
