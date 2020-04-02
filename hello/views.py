@@ -14,11 +14,11 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1
 
-MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
-# MONGO_DB_URI = "mongodb://"+os.environ.get("MONGODB_USERNAME")+":"+os.environ.get("MONGODB_PASSWORD")+"@"+"mongodb"+":27017"
+#MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
+MONGO_DB_URI = "mongodb://"+os.environ.get("MONGODB_USERNAME")+":"+os.environ.get("MONGODB_PASSWORD")+"@"+"mongodb"+":27017"
 
 myclient = pymongo.MongoClient(MONGO_DB_URI)
-mydb = myclient["heroku_166t21vc"]
+#mydb = myclient["heroku_166t21vc"]
 
 
 # mydb = myclient["django_db"]
