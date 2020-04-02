@@ -19,9 +19,7 @@ MONGO_DB_URI = "mongodb://"+os.environ.get("MONGODB_USERNAME")+":"+os.environ.ge
 
 myclient = pymongo.MongoClient(MONGO_DB_URI)
 #mydb = myclient["heroku_166t21vc"]
-
-
-# mydb = myclient["django_db"]
+mydb = myclient["django_db"]
 
 
 # Create your views here.
