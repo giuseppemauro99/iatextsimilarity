@@ -7,8 +7,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       MONGODB_DATABASE: django_mongodb
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: mongoadmin
+      MONGODB_USER: root
+      MONGODB_PASS: mongoadmin
       MONGODB_HOSTNAME: mongodb
     volumes:
       - .:/gettingstarted
@@ -20,14 +20,14 @@ services:
       - migration
 
   mongodb:
-    image: mongo:4.2.3-bionic
+    image: tutum/mongodb
     container_name: mongodb
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_DATABASE: django_mongodb
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
+      MONGODB_DATABASE: django_mongodb
+      MONGODB_USER: user
+      MONGODB_PASS: mongoadmin
     volumes:
       - ./init-db/init-db.js:/docker-entrypoint-initdb.d/init-db.js
       - ./data-db:/data/db
