@@ -1,3 +1,4 @@
+use admin
 db.createUser(
         {
             user: "user1",

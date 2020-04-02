@@ -6,6 +6,6 @@ WORKDIR /gettingstarted
 COPY . /gettingstarted/
 RUN pip install -r requirements.txt
 
-EXPOSE 8000
+RUN mongo django_mongodb /gettingstarted/init-db/init-db.js
 
 CMD [ "gunicorn", "-w", "4", "--bind_ip_all", "0.0.0.0:8000", "wsgi"]
