@@ -10,9 +10,21 @@
     {% for row in sim_matrix %}
         <tr>
             {% for cell in row %}
-                <td>
-                    {{ cell }}
-                </td>
+                {% if cell == request.session.label1 %}
+                    <td bgcolor="#DAF7A6">
+                        {{ cell }}
+                    </td>
+                {% endif %}
+                {% if cell == request.session.label2 %}
+                    <td bgcolor="#FFC300">
+                        {{ cell }}
+                    </td>
+                {% endif %}
+                {% if cell == request.session.label3 %}
+                    <td bgcolor="#FF5733">
+                        {{ cell }}
+                    </td>
+                {% endif %}
             {% endfor %}
         </tr>
     {% endfor %}
