@@ -22,6 +22,8 @@ services:
       - 8000:8000
     links:
       - mongodb
+    depends_on:
+      - migration
     networks:
       - backend
 
@@ -35,13 +37,33 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongoadmin
     volumes:
-      # seeding scripts
-      - ./mongo-entrypoint:/docker-entrypoint-initdb.d
-      # named volumes
-      - mongodb:/data/db
-      - mongoconfig:/data/configdb
+      - ./init-db:/docker-entrypoint-initdb.d
+      - ./data-db:/data/db
     networks:
       - backend
+
+  migration:
+    build: .
+    image: app
+    command: python manage.py migrate
+    volumes:
+      - .:/gettingstarted
+    links:
+      - mongodb
+    depends_on:
+      - make_migrations
+
+    make_migrations:
+      build: .
+      image: app
+      command: python manage.py makemigrations
+      volumes:
+        - .:/gettingstarted
+      links:
+        - mongodb
+      depends_on:
+        - mongodb
+
 
 networks:
   backend:
