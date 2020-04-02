@@ -29,7 +29,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mongoadmin
     volumes:
-      - ./init-db:/docker-entrypoint-initdb.d
+      - ./init-db/init-db.js:/docker-entrypoint-initdb.d/init-db.js
       - ./data-db:/data/db
 
   migration:
