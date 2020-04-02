@@ -15,11 +15,13 @@ from .models import Greeting
 from .forms import Form1
 
 MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
-#MONGO_DB_URI = "mongodb://"+os.environ.get("MONGODB_USERNAME")+":"+os.environ.get("MONGODB_PASSWORD")+"@"+"mongodb"+":27017"
+# MONGO_DB_URI = "mongodb://"+os.environ.get("MONGODB_USERNAME")+":"+os.environ.get("MONGODB_PASSWORD")+"@"+"mongodb"+":27017"
 
 myclient = pymongo.MongoClient(MONGO_DB_URI)
 mydb = myclient["heroku_166t21vc"]
-#mydb = myclient["django_db"]
+
+
+# mydb = myclient["django_db"]
 
 
 # Create your views here.
@@ -34,7 +36,7 @@ def index(request):
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
             uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
-            #process label
+            # process label
             request.session["label1"] = form.cleaned_data["label1"]
             request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
             request.session["label1_finish"] = str(form.cleaned_data["label1_interval"]).split("-")[1]
@@ -88,10 +90,11 @@ def calculatesimilarity(request):
     sim_matrix, colth, rowth = similarityMatrix(file1, file2, request)
     finish = datetime.now()
 
-    return render(request, 'calculatesimilarity.html', {'tempo_di_esecuzione': (finish-start), 'sim_matrix': sim_matrix})
+    return render(request, 'calculatesimilarity.html',
+                  {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix})
 
 
-def similarityMatrix(file1, file2,request):
+def similarityMatrix(file1, file2, request):
     nlp = spacy.load("it_core_news_sm")
 
     buf1 = io.StringIO(file1)
@@ -110,15 +113,15 @@ def similarityMatrix(file1, file2,request):
         for line2 in lines2:
             doc1 = nlp(line1)
             doc2 = nlp(line2)
-            val = f"{ (doc1.similarity(doc2)*100) :.2f}" #calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
+            val = f"{(doc1.similarity(doc2) * 100) :.2f}"  # calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
             sim_matrix[i][j] = val2Label(val, request)
             j = j + 1
         i = i + 1
 
     return sim_matrix, lines1, lines2
 
-def val2Label(val,request):
 
+def val2Label(val, request):
     if float(request.session["label1_start"]) <= float(val) < float(request.session["label1_finish"]):
         return request.session["label1"]
     if float(request.session["label2_start"]) <= float(val) < float(request.session["label2_finish"]):
@@ -127,6 +130,7 @@ def val2Label(val,request):
         return request.session["label3"]
 
     return val
+
 
 def db(request):
     greeting = Greeting()
