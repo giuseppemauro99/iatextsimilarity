@@ -53,16 +53,16 @@ services:
     depends_on:
       - make_migrations
 
-    make_migrations:
-      build: .
-      image: app
-      command: python manage.py makemigrations
-      volumes:
-        - .:/gettingstarted
-      links:
-        - mongodb
-      depends_on:
-        - mongodb
+  make_migrations:
+    build: .
+    image: app
+    command: python manage.py makemigrations
+    volumes:
+      - .:/gettingstarted
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
 
 
 networks:
