@@ -27,7 +27,7 @@ services:
 
   mongodb:
     image: mongo:4.2.3-bionic
-    container_name: my-mongodb-container
+    container_name: mongodb
     ports:
       - 27017:27017
     environment:
