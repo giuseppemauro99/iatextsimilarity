@@ -25,9 +25,9 @@ services:
     ports:
       - 27017:27017
     environment:
-      - MONGO_INITDB_DATABASE=django_mongodb
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=mongoadmin
+      MONGO_INITDB_DATABASE: django_mongodb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
       - ./data-db:/data/db
