@@ -24,8 +24,6 @@ services:
       - mongodb
     depends_on:
       - migration
-    networks:
-      - backend
 
   mongodb:
     image: mongo:4.2.3-bionic
@@ -39,8 +37,6 @@ services:
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
       - ./data-db:/data/db
-    networks:
-      - backend
 
   migration:
     build: .
@@ -64,8 +60,4 @@ services:
     depends_on:
       - mongodb
 
-
-networks:
-  backend:
-    driver: bridge
 
