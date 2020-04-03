@@ -8,14 +8,14 @@ class Form1(forms.Form):
     label1_interval = forms.CharField(label='Intervallo',
                                       widget=forms.TextInput(
                                           attrs={'placeholder': 'Intervallo etichetta, es. 0.0-20.5',
-                                                 'min-width': '30%'}))
+                                                 'class': 'customSize'}))
     label2 = forms.CharField(label="Nome etichetta")
     label2_interval = forms.CharField(label='Intervallo',
                                       widget=forms.TextInput(
                                           attrs={'placeholder': 'Intervallo etichetta, es. 20.5-50.0',
-                                                 'min-width': '30%'}))
+                                                 'class': 'customSize'}))
     label3 = forms.CharField(label="Nome etichetta")
     label3_interval = forms.CharField(label='Intervallo',
                                       widget=forms.TextInput(
                                           attrs={'placeholder': 'Intervallo etichetta, es. 50.0-100.0',
-                                                 'min-width': '30%'}))
+                                                 'class': 'customSize'}))
