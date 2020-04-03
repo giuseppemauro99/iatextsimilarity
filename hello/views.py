@@ -90,7 +90,8 @@ def calculatesimilarity(request):
 
     return render(request, 'calculatesimilarity.html',
                   {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix,
-                   'percentage1': percentage1, 'percentage2': percentage2, 'percentage3': percentage3})
+                   'percentage1': f"{(percentage1 * 100) :.2f}", 'percentage2': f"{(percentage2 * 100) :.2f}",
+                   'percentage3': f"{(percentage3 * 100) :.2f}"})
 
 
 def similarityMatrix(file1, file2, request):
