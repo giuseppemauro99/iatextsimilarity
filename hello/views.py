@@ -14,11 +14,11 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1
 
-#MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
-MONGO_DB_URI = "mongodb://"+"user"+":"+"mongoadmin"+"@"+"mongodb"+":27017"
+# MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
+MONGO_DB_URI = "mongodb://" + "user" + ":" + "mongoadmin" + "@" + "mongodb" + ":27017"
 
 myclient = pymongo.MongoClient(MONGO_DB_URI)
-#mydb = myclient["heroku_166t21vc"]
+# mydb = myclient["heroku_166t21vc"]
 mydb = myclient["admin"]
 
 
@@ -85,11 +85,12 @@ def calculatesimilarity(request):
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
     start = datetime.now()
-    sim_matrix, colth, rowth = similarityMatrix(file1, file2, request)
+    sim_matrix, colth, rowth, percentage1, percentage2, percentage3 = similarityMatrix(file1, file2, request)
     finish = datetime.now()
 
     return render(request, 'calculatesimilarity.html',
-                  {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix})
+                  {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix,
+                   'percentage1': percentage1, 'percentage2': percentage2, 'percentage3': percentage3})
 
 
 def similarityMatrix(file1, file2, request):
@@ -116,15 +117,29 @@ def similarityMatrix(file1, file2, request):
             j = j + 1
         i = i + 1
 
-    return sim_matrix, lines1, lines2
+    percentage1 = c_label1 / (col * row)
+    percentage2 = c_label2 / (col * row)
+    percentage3 = c_label3 / (col * row)
+
+    return sim_matrix, lines1, lines2, percentage1, percentage2, percentage3
+
+
+c_label1 = 0
+c_label2 = 0
+c_label3 = 0
 
 
 def val2Label(val, request):
+    global c_label1, c_label2, c_label3
+
     if float(request.session["label1_start"]) <= float(val) < float(request.session["label1_finish"]):
+        c_label1 += 1
         return request.session["label1"]
     if float(request.session["label2_start"]) <= float(val) < float(request.session["label2_finish"]):
+        c_label2 += 1
         return request.session["label2"]
     if float(request.session["label3_start"]) <= float(val) < float(request.session["label3_finish"]):
+        c_label3 += 1
         return request.session["label3"]
 
     return val

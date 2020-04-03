@@ -3,31 +3,36 @@
 
 {% block content %}
 
-<h1>Tempo di esecuzione: {{ tempo_di_esecuzione }}</h1>
-<br/>
-<h2>Similarity: </h2>
-<table class="table">
-    {% for row in sim_matrix %}
-        <tr>
-            {% for cell in row %}
-                {% if cell == request.session.label1 %}
-                    <td bgcolor="#FF5733">
-                        {{ cell }}
-                    </td>
-                {% endif %}
-                {% if cell == request.session.label2 %}
-                    <td bgcolor="#FFC300">
-                        {{ cell }}
-                    </td>
-                {% endif %}
-                {% if cell == request.session.label3 %}
-                    <td bgcolor="#DAF7A6">
-                        {{ cell }}
-                    </td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-    {% endfor %}
-</table>
+    <h1>Tempo di esecuzione: {{ tempo_di_esecuzione }}</h1>
+    <h2>
+        {{ request.session.label1 }}: {{ percentage1 }}% <br/>
+        {{ request.session.label2 }}: {{ percentage2 }}% <br/>
+        {{ request.session.label3 }}: {{ percentage3 }}% <br/>
+    </h2>
+    <br/>
+    <h2>Similarity: </h2>
+    <table class="table">
+        {% for row in sim_matrix %}
+            <tr>
+                {% for cell in row %}
+                    {% if cell == request.session.label1 %}
+                        <td bgcolor="#FF5733">
+                            {{ cell }}
+                        </td>
+                    {% endif %}
+                    {% if cell == request.session.label2 %}
+                        <td bgcolor="#FFC300">
+                            {{ cell }}
+                        </td>
+                    {% endif %}
+                    {% if cell == request.session.label3 %}
+                        <td bgcolor="#DAF7A6">
+                            {{ cell }}
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 
 {% endblock %}
