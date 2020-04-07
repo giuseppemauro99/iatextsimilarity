@@ -85,13 +85,13 @@ def calculatesimilarity(request):
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
     start = datetime.now()
-    sim_matrix, colth, rowth, percentage1, percentage2, percentage3 = similarityMatrix(file1, file2, request)
+    sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size = similarityMatrix(file1, file2, request)
     finish = datetime.now()
 
     return render(request, 'calculatesimilarity.html',
                   {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix,
                    'percentage1': f"{(percentage1 * 100) :.2f}", 'percentage2': f"{(percentage2 * 100) :.2f}",
-                   'percentage3': f"{(percentage3 * 100) :.2f}"})
+                   'percentage3': f"{(percentage3 * 100) :.2f}", 'size': size})
 
 
 def similarityMatrix(file1, file2, request):
@@ -122,7 +122,7 @@ def similarityMatrix(file1, file2, request):
     percentage2 = c_label2 / (col * row)
     percentage3 = c_label3 / (col * row)
 
-    return sim_matrix, lines1, lines2, percentage1, percentage2, percentage3
+    return sim_matrix, lines1, lines2, percentage1, percentage2, percentage3, (col*row)
 
 
 c_label1 = 0
