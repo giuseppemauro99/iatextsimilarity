@@ -106,6 +106,7 @@ def similarityMatrix(file1, file2, request):
     col = len(lines2)
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
+    sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
     i = j = 0
 
     for line1 in lines1:
@@ -114,8 +115,9 @@ def similarityMatrix(file1, file2, request):
             doc1 = nlp(line1)
             doc2 = nlp(line2)
             val = f"{(doc1.similarity(doc2) * 100) :.2f}"  # calcolo la similarità, la trasformo in percentuale e prendo solo 2 cifre decimali
+            sim_matrix_val[i][j] = float(val)
             sim_matrix[i][j] = val2Label(val, request)
-            sim_matrix[i][j] = sim_matrix[i][j] + " " + "("+str(i+1)+","+str(j+1)+")"
+            sim_matrix[i][j] = sim_matrix[i][j]
             j = j + 1
         i = i + 1
 
@@ -123,7 +125,27 @@ def similarityMatrix(file1, file2, request):
     percentage2 = c_label2 / (col * row)
     percentage3 = c_label3 / (col * row)
 
+    write_matrix_on_csv(sim_matrix)
+    write_matrix_val_on_csv(sim_matrix_val)
+
     return sim_matrix, lines1, lines2, percentage1, percentage2, percentage3, (col*row)
+
+
+def write_matrix_on_csv(matrix):
+    fp = open('csv_label.csv', 'w+')
+    for line in matrix:
+        for cell in line:
+            fp.write(str(cell)+";")
+        fp.write("\n")
+    fp.close()
+
+def write_matrix_val_on_csv(matrix):
+    fp = open('csv_val.csv', 'w+')
+    for line in matrix:
+        for cell in line:
+            fp.write(str(cell) + ";")
+        fp.write("\n")
+    fp.close()
 
 
 c_label1 = 0
