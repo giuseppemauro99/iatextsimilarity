@@ -121,23 +121,25 @@ def similarityMatrix(file1, file2, request):
             j = j + 1
         i = i + 1
 
-    percentage1 = c_label1 / (col * row)
-    percentage2 = c_label2 / (col * row)
-    percentage3 = c_label3 / (col * row)
+    tot = c_label1 + c_label2 + c_label3
+    percentage1 = c_label1 / tot
+    percentage2 = c_label2 / tot
+    percentage3 = c_label3 / tot
 
     write_matrix_on_csv(sim_matrix)
     write_matrix_val_on_csv(sim_matrix_val)
 
-    return sim_matrix, lines1, lines2, percentage1, percentage2, percentage3, (col*row)
+    return sim_matrix, lines1, lines2, percentage1, percentage2, percentage3, (col * row)
 
 
 def write_matrix_on_csv(matrix):
     fp = open('csv_label.csv', 'w+')
     for line in matrix:
         for cell in line:
-            fp.write(str(cell)+";")
+            fp.write(str(cell) + ";")
         fp.write("\n")
     fp.close()
+
 
 def write_matrix_val_on_csv(matrix):
     fp = open('csv_val.csv', 'w+')
@@ -146,6 +148,7 @@ def write_matrix_val_on_csv(matrix):
             fp.write(str(cell) + ";")
         fp.write("\n")
     fp.close()
+
 
 def download_csv_label(req):
     file_path = os.path.join(settings.MEDIA_ROOT, "csv_label.csv")
@@ -156,6 +159,7 @@ def download_csv_label(req):
             return response
     raise Http404
 
+
 def download_csv_val(req):
     file_path = os.path.join(settings.MEDIA_ROOT, "csv_val.csv")
     if os.path.exists(file_path):
@@ -164,6 +168,7 @@ def download_csv_val(req):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
 
 c_label1 = 0
 c_label2 = 0
