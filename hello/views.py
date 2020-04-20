@@ -147,6 +147,12 @@ def write_matrix_val_on_csv(matrix):
         fp.write("\n")
     fp.close()
 
+def download_csv_label(req):
+    return HttpResponse("CIAO")
+
+def download_csv_val(req):
+    return HttpResponse("CIAO")
+
 c_label1 = 0
 c_label2 = 0
 c_label3 = 0
