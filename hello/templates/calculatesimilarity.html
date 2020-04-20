@@ -16,17 +16,17 @@
         {% for row in sim_matrix %}
             <tr>
                 {% for cell in row %}
-                    {% if cell == request.session.label1 %}
+                    {% if request.session.label1 in cell %}
                         <td bgcolor="#FF5733">
                             {{ cell }}
                         </td>
                     {% endif %}
-                    {% if cell == request.session.label2 %}
+                    {% if request.session.label2 in cell %}
                         <td bgcolor="#FFC300">
                             {{ cell }}
                         </td>
                     {% endif %}
-                    {% if cell == request.session.label3 %}
+                    {% if request.session.label3 in cell %}
                         <td bgcolor="#DAF7A6">
                             {{ cell }}
                         </td>
