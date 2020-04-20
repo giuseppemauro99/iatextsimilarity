@@ -19,6 +19,6 @@ urlpatterns = [
     path("db/", hello.views.db, name="db"),
     path("admin/", admin.site.urls),
     path("calculatesimilarity/", hello.views.calculatesimilarity, name="calculatesimilarity"),
-    path("download_csv_label/", hello.views.download_csv_label, name="download_csv_label"),
-    path("download_csv_val/", hello.views.download_csv_val, name="download_csv_val")
+    path("calculatesimilarity/download_csv_label/", hello.views.download_csv_label, name="download_csv_label"),
+    path("calculatesimilarity/download_csv_val/", hello.views.download_csv_val, name="download_csv_val")
 ]
