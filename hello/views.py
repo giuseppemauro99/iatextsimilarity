@@ -148,10 +148,22 @@ def write_matrix_val_on_csv(matrix):
     fp.close()
 
 def download_csv_label(req):
-    return HttpResponse("CIAO")
+    file_path = os.path.join(settings.MEDIA_ROOT, "csv_label.csv")
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 def download_csv_val(req):
-    return HttpResponse("CIAO")
+    file_path = os.path.join(settings.MEDIA_ROOT, "csv_val.csv")
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 c_label1 = 0
 c_label2 = 0
