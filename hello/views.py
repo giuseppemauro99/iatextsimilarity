@@ -95,6 +95,8 @@ def calculatesimilarity(request):
 
 
 def similarityMatrix(file1, file2, request):
+    global c_label1, c_label2, c_label3
+    
     nlp = spacy.load("it_core_news_sm")
 
     buf1 = io.StringIO(file1)
