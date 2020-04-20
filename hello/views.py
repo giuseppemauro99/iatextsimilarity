@@ -96,7 +96,7 @@ def calculatesimilarity(request):
 
 def similarityMatrix(file1, file2, request):
     global c_label1, c_label2, c_label3
-    
+
     nlp = spacy.load("it_core_news_sm")
 
     buf1 = io.StringIO(file1)
@@ -180,13 +180,13 @@ c_label3 = 0
 def val2Label(val, request):
     global c_label1, c_label2, c_label3
 
-    if float(request.session["label1_start"]) <= float(val) < float(request.session["label1_finish"]):
+    if float(request.session["label1_start"]) < float(val) <= float(request.session["label1_finish"]):
         c_label1 += 1
         return request.session["label1"]
-    if float(request.session["label2_start"]) <= float(val) < float(request.session["label2_finish"]):
+    if float(request.session["label2_start"]) < float(val) <= float(request.session["label2_finish"]):
         c_label2 += 1
         return request.session["label2"]
-    if float(request.session["label3_start"]) <= float(val) < float(request.session["label3_finish"]):
+    if float(request.session["label3_start"]) < float(val) <= float(request.session["label3_finish"]):
         c_label3 += 1
         return request.session["label3"]
 
