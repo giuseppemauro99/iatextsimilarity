@@ -147,7 +147,6 @@ def write_matrix_val_on_csv(matrix):
         fp.write("\n")
     fp.close()
 
-
 c_label1 = 0
 c_label2 = 0
 c_label3 = 0
