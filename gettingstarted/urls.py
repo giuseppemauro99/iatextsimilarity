@@ -16,7 +16,7 @@ import hello.views
 
 urlpatterns = [
     path("", hello.views.index, name="index"),
-    path("index_with_textbox/", hello.views.index, name="index_with_textbox"),
+    path("index_with_textbox/", hello.views.index_with_textbox, name="index_with_textbox"),
     path("db/", hello.views.db, name="db"),
     path("admin/", admin.site.urls),
     path("calculatesimilarity/", hello.views.calculatesimilarity, name="calculatesimilarity"),
