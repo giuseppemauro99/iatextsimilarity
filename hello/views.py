@@ -70,7 +70,7 @@ def index_with_textbox(request):
             request.session['file1'] = form.cleaned_data["file1"]
             request.session['file2_query'] = form.cleaned_data["file2_query"]
             request.session['separatore'] = form.cleaned_data["separatore"]
-            uploadToMongoDB(request.session['file1'], request.session['file2_query'], request)
+            uploadToMongoDB2(request.session['file1'], request.session['file2_query'], request)
             # process label
             request.session["label1"] = form.cleaned_data["label1"]
             request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
@@ -113,6 +113,24 @@ def uploadToMongoDB(file1, file2, request):
 
     return True
 
+def uploadToMongoDB2(file1, file2, request):
+    text_file1 = ""
+    text_file2 = ""
+    for line in file1:
+        text_file1 = text_file1 + str(line)
+    for line in file2:
+        text_file2 = text_file2 + str(line)
+
+    text1_json = {'data': text_file1}
+    text2_json = {'data': text_file2}
+
+    f1 = mydb["files"].insert_one(text1_json)
+    f2 = mydb["files"].insert_one(text2_json)
+
+    request.session['file1'] = str(f1.inserted_id)
+    request.session['file2_query'] = str(f2.inserted_id)
+
+    return True
 
 def calculatesimilarity(request):
     file1id = request.session['file1']
