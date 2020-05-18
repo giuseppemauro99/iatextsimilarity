@@ -168,7 +168,7 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
     sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
     i = j = 0
-    ,
+    
     for line1 in lines1:
         j = 0
         for line2 in lines2:
