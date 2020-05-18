@@ -33,6 +33,7 @@ def index(request):
             # process file to DB
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
+            request.session['separatore'] = '\n'
             uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
             # process label
             request.session["label1"] = form.cleaned_data["label1"]
@@ -122,13 +123,8 @@ def calculatesimilarity(request):
 
     start = datetime.now()
 
-    if not request.session["separatore"]:
-        sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size = similarityMatrix(file1, file2, request)
-    else:
-        sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size = similarityMatrix(file1, file2, request,
-                                                                                                 separatore=
-                                                                                                 request.session[
-                                                                                                     'separatore'])
+    sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size \
+        = similarityMatrix(file1, file2, request, separatore=request.session['separatore'])
 
     finish = datetime.now()
 
