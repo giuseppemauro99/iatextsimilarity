@@ -145,7 +145,7 @@ def calculatesimilarity(request):
         = similarityMatrix(file1, file2, request, separatore=request.session['separatore'])
 
     finish = datetime.now()
-
+    ,
     return render(request, 'calculatesimilarity.html',
                   {'tempo_di_esecuzione': (finish - start), 'sim_matrix': sim_matrix,
                    'percentage1': f"{(percentage1 * 100) :.2f}", 'percentage2': f"{(percentage2 * 100) :.2f}",
