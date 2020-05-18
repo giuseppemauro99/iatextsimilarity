@@ -23,7 +23,7 @@ class Form1(forms.Form):
 class Form2(forms.Form):
     file1 = forms.CharField(label="Inserisci file 1", widget=forms.Textarea)
     file2_query = forms.CharField(label="Inserisci file 2", widget=forms.Textarea)
-    separatore = forms.CharField(label="Inserisci separatore",widget=forms.TextInput(
+    separatore = forms.CharField(label="Inserisci separatore", widget=forms.TextInput(
                                           attrs={'placeholder': 'Es. :, \\n, ;, ...',
                                                  'class': 'customSize'}))
     label1 = forms.CharField(label="Nome etichetta")

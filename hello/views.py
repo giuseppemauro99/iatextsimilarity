@@ -70,7 +70,7 @@ def index_with_textbox(request):
             request.session['file1'] = form.cleaned_data["file1"]
             request.session['file2_query'] = form.cleaned_data["file2_query"]
             request.session['separatore'] = form.cleaned_data["separatore"]
-            uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
+            uploadToMongoDB(request.session['file1'], request.session['file2_query'], request)
             # process label
             request.session["label1"] = form.cleaned_data["label1"]
             request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
