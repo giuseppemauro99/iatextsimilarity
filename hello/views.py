@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 
 from .models import Greeting
-from .forms import Form1
+from .forms import Form1, Form2
 
 # MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
 MONGO_DB_URI = "mongodb://" + "user" + ":" + "mongoadmin" + "@" + "mongodb" + ":27017"
@@ -57,6 +57,42 @@ def index(request):
     return render(request, 'index.html', {'form': form})
 
 
+# Create your views here.
+def index_with_textbox(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = Form2(request.POST, request.FILES)
+        # check whether it's valid:
+        if form.is_valid():
+            # process file to DB
+            request.session['file1'] = form.cleaned_data["file1"]
+            request.session['file2_query'] = form.cleaned_data["file2_query"]
+            request.session['separatore'] = form.cleaned_data["separatore"]
+            uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
+            # process label
+            request.session["label1"] = form.cleaned_data["label1"]
+            request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
+            request.session["label1_finish"] = str(form.cleaned_data["label1_interval"]).split("-")[1]
+
+            request.session["label2"] = form.cleaned_data["label2"]
+            request.session["label2_start"] = str(form.cleaned_data["label2_interval"]).split("-")[0]
+            request.session["label2_finish"] = str(form.cleaned_data["label2_interval"]).split("-")[1]
+
+            request.session["label3"] = form.cleaned_data["label3"]
+            request.session["label3_start"] = str(form.cleaned_data["label3_interval"]).split("-")[0]
+            request.session["label3_finish"] = str(form.cleaned_data["label3_interval"]).split("-")[1]
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/calculatesimilarity/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = Form2()
+
+    return render(request, 'index.html', {'form': form})
+
+
 def uploadToMongoDB(file1, file2, request):
     text_file1 = ""
     text_file2 = ""
@@ -85,7 +121,15 @@ def calculatesimilarity(request):
     file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
 
     start = datetime.now()
-    sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size = similarityMatrix(file1, file2, request)
+
+    if not request.session["separatore"]:
+        sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size = similarityMatrix(file1, file2, request)
+    else:
+        sim_matrix, colth, rowth, percentage1, percentage2, percentage3, size = similarityMatrix(file1, file2, request,
+                                                                                                 separatore=
+                                                                                                 request.session[
+                                                                                                     'separatore'])
+
     finish = datetime.now()
 
     return render(request, 'calculatesimilarity.html',
@@ -94,17 +138,17 @@ def calculatesimilarity(request):
                    'percentage3': f"{(percentage3 * 100) :.2f}", 'size': size})
 
 
-def similarityMatrix(file1, file2, request):
+def similarityMatrix(file1, file2, request, separatore='\n'):
     global c_label1, c_label2, c_label3
 
     nlp = spacy.load("it_core_news_sm")
 
-    buf1 = io.StringIO(file1)
-    lines1 = buf1.readlines()
+    buf1 = io.StringIO(file1).getvalue()
+    lines1 = buf1.split(separatore)
     row = len(lines1)
 
-    buf2 = io.StringIO(file2)
-    lines2 = buf2.readlines()
+    buf2 = io.StringIO(file2).getvalue()
+    lines2 = buf2.split(separatore)
     col = len(lines2)
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
