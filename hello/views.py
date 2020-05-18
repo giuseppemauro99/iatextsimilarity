@@ -91,7 +91,7 @@ def index_with_textbox(request):
     else:
         form = Form2()
 
-    return render(request, 'index.html', {'form': form})
+    return render(request, 'index_with_textbox.html', {'form': form})
 
 
 def uploadToMongoDB(file1, file2, request):
