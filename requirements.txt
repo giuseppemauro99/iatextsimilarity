@@ -3,7 +3,7 @@ gunicorn
 #waitress
 django-heroku
 spacy==2.3.6
-https://github.com/explosion/spacy-models/releases/download/it_core_news_md-3.2.0/it_core_news_md-3.2.0.tar.gz
+https://github.com/explosion/spacy-models/releases/download/it_core_news_md-2.3.0/it_core_news_md-2.3.0.tar.gz
 numpy
 gensim
 pymongo
