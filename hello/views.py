@@ -1,4 +1,5 @@
-import os, io, redis, datetime
+import os, io, redis
+from datetime import datetime
 import spacy_legacy as spacy
 from hashlib import md5
 from django.conf import settings
