@@ -7,6 +7,6 @@ https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-2.2.
 numpy
 gensim
 pymongo
-scipy>=0.18.1
-setuptools>=40.3.0
+scipy
+setuptools
 redis
