@@ -91,14 +91,11 @@ def uploadToRedisDB(file1, file2, request):
     for line in file2:
         text_file2 = text_file2 + str(line.decode("UTF-8"))
 
-    text1_json = {'data': text_file1}
-    text2_json = {'data': text_file2}
+    f1_key = str(md5(text_file1))
+    f2_key = str(md5(text_file2))
 
-    f1_key = str(md5(text1_json))
-    f2_key = str(md5(text2_json))
-
-    f1 = redis.set(f1_key, text1_json)
-    f2 = redis.set(f2_key, text2_json)
+    f1 = redis.set(f1_key, text_file1)
+    f2 = redis.set(f2_key, text_file2)
 
     if not f1 or not f2:
         raise "Errore caricamento file su Redis"
@@ -116,14 +113,11 @@ def uploadToRedisDB2(file1, file2, request):
     for line in file2:
         text_file2 = text_file2 + str(line)
 
-    text1_json = {'data': text_file1}
-    text2_json = {'data': text_file2}
+    f1_key = str(md5(text_file1))
+    f2_key = str(md5(text_file2))
 
-    f1_key = str(md5(text1_json))
-    f2_key = str(md5(text2_json))
-
-    f1 = redis.set(f1_key, text1_json)
-    f2 = redis.set(f2_key, text2_json)
+    f1 = redis.set(f1_key, text_file1)
+    f2 = redis.set(f2_key, text_file2)
 
     if not f1 or not f2:
         raise "Errore caricamento file su Redis"
