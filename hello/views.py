@@ -139,8 +139,8 @@ def calculatesimilarity(request):
     file1_key = request.session['file1']
     file2_key = request.session['file2_query']
 
-    file1 = redis.get(file1_key).encode('utf-8')
-    file2 = redis.get(file2_key).encode('utf-8')
+    file1 = redis.get(file1_key).decode('utf-8')
+    file2 = redis.get(file2_key).decode('utf-8')
 
     start = datetime.now()
 
