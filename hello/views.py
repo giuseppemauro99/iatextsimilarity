@@ -96,8 +96,7 @@ def uploadToRedisDB(file1, file2, request):
             text_file2 = text_file2 + str(line.decode("UTF-8"))
     except Exception as e:
         print("Posso leggere solo file semplici (csv,txt,...)")
-        print("Errore lettura file: " + e)
-        raise e
+        raise Exception("Errore lettura file: " + e.message)
 
     text_file1 = text_file1.encode('utf-8')
     text_file2 = text_file2.encode('utf-8')
@@ -119,10 +118,15 @@ def uploadToRedisDB(file1, file2, request):
 def uploadToRedisDB2(file1, file2, request):
     text_file1 = ""
     text_file2 = ""
-    for line in file1:
-        text_file1 = text_file1 + str(line.decode("UTF-8"))
-    for line in file2:
-        text_file2 = text_file2 + str(line.decode("UTF-8"))
+
+    try:
+        for line in file1:
+            text_file1 = text_file1 + str(line.decode("UTF-8"))
+        for line in file2:
+            text_file2 = text_file2 + str(line.decode("UTF-8"))
+    except Exception as e:
+        print("Posso leggere solo file semplici (csv,txt,...)")
+        raise Exception("Errore lettura file: " + e.message)
 
     text_file1 = text_file1.encode('utf-8')
     text_file2 = text_file2.encode('utf-8')
@@ -134,7 +138,7 @@ def uploadToRedisDB2(file1, file2, request):
     f2 = redis.set(f2_key, text_file2)
 
     if not f1 or not f2:
-        raise Exception("Errore caricamento file su Redis")
+        raise Exception("Errore caricamento file su Redis2")
 
     request.session['file1'] = f1_key
     request.session['file2_query'] = f2_key
@@ -175,8 +179,7 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         lines2 = buf2.split(separatore)
         col = len(lines2)
     except Exception as e:
-        print("Errore lettura file da Redis: " + e)
-        raise e
+        raise Exception("Errore lettura file da Redis: " + e.message)
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
     sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
