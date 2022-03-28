@@ -169,7 +169,7 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         lines2 = buf2.split(separatore)
         col = len(lines2)
     except Exception as e:
-        raise "Errore lettura file" + e
+        raise "Errore lettura file" + str(e)
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
     sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
