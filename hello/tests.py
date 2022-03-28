@@ -21,7 +21,7 @@ class SimpleTest(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def spacyTest(self):
-        nlp = spacy.load("it_core_news_md")
+        nlp = spacy.load("it_core_news_sm")
 
         doc1 = nlp("test spacy1")
         doc2 = nlp("test spacy2")
