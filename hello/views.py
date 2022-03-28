@@ -95,9 +95,7 @@ def uploadToRedisDB(file1, file2, request):
         for line in file2:
             text_file2 = text_file2 + str(line.decode("UTF-8"))
     except Exception as e:
-        print("Posso leggere solo file semplici (csv,txt,...)")
-        print("Errore lettura file")
-        print(e)
+        raise e
 
     text_file1 = text_file1.encode('utf-8')
     text_file2 = text_file2.encode('utf-8')
@@ -126,9 +124,7 @@ def uploadToRedisDB2(file1, file2, request):
         for line in file2:
             text_file2 = text_file2 + str(line.decode("UTF-8"))
     except Exception as e:
-        print("Posso leggere solo file semplici (csv,txt,...)")
-        print("Errore lettura file")
-        print(e)
+        raise e
 
     text_file1 = text_file1.encode('utf-8')
     text_file2 = text_file2.encode('utf-8')
@@ -182,7 +178,7 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         col = len(lines2)
     except Exception as e:
         print("Errore lettura file da Redis: ")
-        print(e)
+        raise e
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
     sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
