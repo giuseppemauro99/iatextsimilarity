@@ -1,10 +1,11 @@
 import csv
 import datetime
 from datetime import datetime
+from hashlib import md5
 from wsgiref.util import FileWrapper
 
 import spacy
-import os, io
+import os, io, redis
 import pymongo as pymongo
 from bson import ObjectId
 from django.conf import settings
@@ -14,13 +15,8 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1, Form2
 
-# MONGO_DB_URI = "mongodb://heroku_166t21vc:chbme62a0ama4gda9p203bgs0e@ds113935.mlab.com:13935/heroku_166t21vc?retryWrites=false"
-MONGO_DB_URI = "mongodb://" + "user" + ":" + "mongoadmin" + "@" + "mongodb" + ":27017"
-
-myclient = pymongo.MongoClient(MONGO_DB_URI)
-# mydb = myclient["heroku_166t21vc"]
-mydb = myclient["admin"]
-
+redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+redis = redis.from_url(redis_url)
 
 # Create your views here.
 def index(request):
@@ -34,7 +30,7 @@ def index(request):
             request.session['file1'] = request.FILES['file1']
             request.session['file2_query'] = request.FILES['file2_query']
             request.session['separatore'] = '\n'
-            uploadToMongoDB(request.FILES['file1'], request.FILES['file2_query'], request)
+            uploadToRedisDB(request.FILES['file1'], request.FILES['file2_query'], request)
             # process label
             request.session["label1"] = form.cleaned_data["label1"]
             request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
@@ -70,7 +66,7 @@ def index_with_textbox(request):
             request.session['file1'] = form.cleaned_data["file1"]
             request.session['file2_query'] = form.cleaned_data["file2_query"]
             request.session['separatore'] = form.cleaned_data["separatore"]
-            uploadToMongoDB2(request.session['file1'], request.session['file2_query'], request)
+            uploadToRedisDB2(request.session['file1'], request.session['file2_query'], request)
             # process label
             request.session["label1"] = form.cleaned_data["label1"]
             request.session["label1_start"] = str(form.cleaned_data["label1_interval"]).split("-")[0]
@@ -94,7 +90,7 @@ def index_with_textbox(request):
     return render(request, 'index_with_textbox.html', {'form': form})
 
 
-def uploadToMongoDB(file1, file2, request):
+def uploadToRedisDB(file1, file2, request):
     text_file1 = ""
     text_file2 = ""
     for line in file1:
@@ -105,15 +101,21 @@ def uploadToMongoDB(file1, file2, request):
     text1_json = {'data': text_file1}
     text2_json = {'data': text_file2}
 
-    f1 = mydb["files"].insert_one(text1_json)
-    f2 = mydb["files"].insert_one(text2_json)
+    f1_key = str(md5(text1_json))
+    f2_key = str(md5(text2_json))
 
-    request.session['file1'] = str(f1.inserted_id)
-    request.session['file2_query'] = str(f2.inserted_id)
+    f1 = redis.set(f1_key, text1_json)
+    f2 = redis.set(f2_key, text2_json)
+
+    if not f1 or not f2:
+        raise "Errore caricamento file su Redis"
+
+    request.session['file1'] = f1_key
+    request.session['file2_query'] = f2_key
 
     return True
 
-def uploadToMongoDB2(file1, file2, request):
+def uploadToRedisDB2(file1, file2, request):
     text_file1 = ""
     text_file2 = ""
     for line in file1:
@@ -124,20 +126,26 @@ def uploadToMongoDB2(file1, file2, request):
     text1_json = {'data': text_file1}
     text2_json = {'data': text_file2}
 
-    f1 = mydb["files"].insert_one(text1_json)
-    f2 = mydb["files"].insert_one(text2_json)
+    f1_key = str(md5(text1_json))
+    f2_key = str(md5(text2_json))
 
-    request.session['file1'] = str(f1.inserted_id)
-    request.session['file2_query'] = str(f2.inserted_id)
+    f1 = redis.set(f1_key, text1_json)
+    f2 = redis.set(f2_key, text2_json)
+
+    if not f1 or not f2:
+        raise "Errore caricamento file su Redis"
+
+    request.session['file1'] = f1_key
+    request.session['file2_query'] = f2_key
 
     return True
 
 def calculatesimilarity(request):
-    file1id = request.session['file1']
-    file2id = request.session['file2_query']
+    file1_key = request.session['file1']
+    file2_key = request.session['file2_query']
 
-    file1 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file1id)})["data"]
-    file2 = mydb.get_collection("files").find_one_and_delete({'_id': ObjectId(file2id)})["data"]
+    file1 = redis.get(file1_key)
+    file2 = redis.get(file2_key)
 
     start = datetime.now()
 

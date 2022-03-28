@@ -9,3 +9,4 @@ gensim
 pymongo
 scipy>=0.18.1
 setuptools>=40.3.0
+redis
