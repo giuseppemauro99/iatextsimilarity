@@ -168,7 +168,7 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         buf2 = io.StringIO(file2).getvalue()
         lines2 = buf2.split(separatore)
         col = len(lines2)
-    except Exception as e:
+    except BaseException as e:
         raise "Errore lettura file" + str(e)
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
