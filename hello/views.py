@@ -103,7 +103,7 @@ def uploadToRedisDB(file1, file2, request):
     f2 = redis.set(f2_key, text_file2)
 
     if not f1 or not f2:
-        raise "Errore caricamento file su Redis"
+        raise Exception("Errore caricamento file su Redis")
 
     request.session['file1'] = f1_key
     request.session['file2_query'] = f2_key
@@ -128,7 +128,7 @@ def uploadToRedisDB2(file1, file2, request):
     f2 = redis.set(f2_key, text_file2)
 
     if not f1 or not f2:
-        raise "Errore caricamento file su Redis"
+        raise Exception("Errore caricamento file su Redis")
 
     request.session['file1'] = f1_key
     request.session['file2_query'] = f2_key
@@ -168,8 +168,8 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         buf2 = io.StringIO(file2).getvalue()
         lines2 = buf2.split(separatore)
         col = len(lines2)
-    except BaseException as e:
-        raise "Errore lettura file" + str(e)
+    except Exception as e:
+        raise Exception("Errore lettura file: " + str(e))
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
     sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
