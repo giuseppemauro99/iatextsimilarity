@@ -1,8 +1,6 @@
-from datetime import datetime
-from hashlib import md5
-
-import os, io, redis
+import os, io, redis, datetime
 import spacy_legacy as spacy
+from hashlib import md5
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, Http404
