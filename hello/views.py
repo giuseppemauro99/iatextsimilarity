@@ -87,12 +87,12 @@ def uploadToRedisDB(file1, file2, request):
     text_file1 = ""
     text_file2 = ""
     for line in file1:
-        text_file1 = text_file1 + str(line)
+        text_file1 = text_file1 + str(line.decode("UTF-8"))
     for line in file2:
-        text_file2 = text_file2 + str(line)
+        text_file2 = text_file2 + str(line.decode("UTF-8"))
 
-    f1_key = str(md5(text_file1))
-    f2_key = str(md5(text_file2))
+    f1_key = str(md5(text_file1.encode('utf-8')))
+    f2_key = str(md5(text_file2.encode('utf-8')))
 
     f1 = redis.set(f1_key, text_file1)
     f2 = redis.set(f2_key, text_file2)
@@ -109,12 +109,12 @@ def uploadToRedisDB2(file1, file2, request):
     text_file1 = ""
     text_file2 = ""
     for line in file1:
-        text_file1 = text_file1 + str(line)
+        text_file1 = text_file1 + str(line.decode("UTF-8"))
     for line in file2:
-        text_file2 = text_file2 + str(line)
+        text_file2 = text_file2 + str(line.decode("UTF-8"))
 
-    f1_key = str(md5(text_file1))
-    f2_key = str(md5(text_file2))
+    f1_key = str(md5(text_file1.encode('utf-8')))
+    f2_key = str(md5(text_file2.encode('utf-8')))
 
     f1 = redis.set(f1_key, text_file1)
     f2 = redis.set(f2_key, text_file2)
