@@ -139,8 +139,8 @@ def calculatesimilarity(request):
     file1_key = request.session['file1']
     file2_key = request.session['file2_query']
 
-    file1 = redis.get(file1_key)
-    file2 = redis.get(file2_key)
+    file1 = redis.get(file1_key).encode('utf-8')
+    file2 = redis.get(file2_key).encode('utf-8')
 
     start = datetime.now()
 
@@ -169,7 +169,8 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         lines2 = buf2.split(separatore)
         col = len(lines2)
     except Exception as e:
-        raise Exception("Errore lettura file: " + e)
+        print("Errore lettura file: " + e)
+        raise e
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
     sim_matrix_val = [[1 for x in range(col)] for y in range(row)]
