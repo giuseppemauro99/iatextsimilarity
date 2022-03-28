@@ -1,6 +1,7 @@
 import os, io, redis
+import spacy
+
 from datetime import datetime
-import spacy_legacy
 from hashlib import md5
 from django.conf import settings
 from django.shortcuts import render
@@ -151,7 +152,7 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2, request, separatore='\n'):
     global c_label1, c_label2, c_label3
 
-    nlp = spacy_legacy.load("it_core_news_sm")
+    nlp = spacy.load("it_core_news_md")
 
     try:
         buf1 = io.StringIO(file1).getvalue()

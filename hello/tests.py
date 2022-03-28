@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AnonymousUser, User
 from django.test import TestCase, RequestFactory
 
+import spacy
+
 from .views import index
 
 
@@ -17,3 +19,11 @@ class SimpleTest(TestCase):
         # Test my_view() as if it were deployed at /customer/details
         response = index(request)
         self.assertEqual(response.status_code, 200)
+    
+    def spacyTest(self):
+        nlp = spacy.load("it_core_news_md")
+
+        doc1 = nlp("test spacy1")
+        doc2 = nlp("test spacy2")
+
+        self.assertTrue(doc1.similarity(doc2) > 0.5)
