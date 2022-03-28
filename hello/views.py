@@ -96,7 +96,7 @@ def uploadToRedisDB(file1, file2, request):
             text_file2 = text_file2 + str(line.decode("UTF-8"))
     except Exception as e:
         print("Posso leggere solo file semplici (csv,txt,...)")
-        raise Exception("Errore lettura file: " + e.message)
+        raise Exception("Errore lettura file: " + str(e))
 
     text_file1 = text_file1.encode('utf-8')
     text_file2 = text_file2.encode('utf-8')
