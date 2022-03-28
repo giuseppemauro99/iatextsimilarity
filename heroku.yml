@@ -4,6 +4,7 @@ services:
   web:
     build: .
     restart: always
+    run: gunicorn gettingstarted.wsgi --log-level=debug --workers=7 --timeout=2400
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       MONGODB_DATABASE: admin
