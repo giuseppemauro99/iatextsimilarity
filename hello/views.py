@@ -177,7 +177,6 @@ def similarityMatrix(file1, file2, request, separatore='\n'):
         lines2 = buf2.split(separatore)
         col = len(lines2)
     except Exception as e:
-        print("Errore lettura file da Redis: ")
         raise e
 
     sim_matrix = [["string" for x in range(col)] for y in range(row)]
