@@ -1,13 +1,8 @@
-import csv
-import datetime
 from datetime import datetime
 from hashlib import md5
-from wsgiref.util import FileWrapper
 
-import spacy
 import os, io, redis
-import pymongo as pymongo
-from bson import ObjectId
+import spacy_legacy as spacy
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, Http404

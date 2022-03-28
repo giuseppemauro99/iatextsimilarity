@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Python",
-  "description": "A barebones Python app, which can easily be deployed to Heroku.",
+  "name": "IA Text Similiraty",
+  "description": "IA Text Similiraty",
   "image": "heroku/python",
-  "repository": "https://github.com/heroku/python-getting-started",
+  "repository": "https://github.com/giuseppemauro99/iatextsimilarity",
   "keywords": ["python", "django" ],
   "addons": [ "heroku-postgresql" ],
   "env": {
