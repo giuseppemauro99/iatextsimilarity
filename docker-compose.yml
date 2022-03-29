@@ -3,6 +3,8 @@ version: "3.9"
 services:
   db:
     image: postgres
+    ports:
+      - '5432:5432'
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
@@ -20,7 +22,7 @@ services:
   web:
     image: iatextsimilarity:v1.0.0
     build: .
-    command: gunicorn gettingstarted.wsgi --log-level=debug --workers=7 --timeout=2400
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:

@@ -1,3 +1,6 @@
+data/*
+csv_label.csv
+csv_val.csv
 venv
 *.pyc
 staticfiles

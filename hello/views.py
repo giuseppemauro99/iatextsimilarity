@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1, Form2
 
-redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+redis_url = os.getenv('redis://redis:6379', 'redis://localhost:6379')
 redis = redis.from_url(redis_url)
 
 # Create your views here.
@@ -166,7 +166,7 @@ def calculatesimilarity(request):
 def similarityMatrix(file1, file2, request, separatore='\n'):
     global c_label1, c_label2, c_label3
 
-    nlp = spacy.load("it_core_news_sm")
+    nlp = spacy.load("it_core_news_md")
 
     try:
         buf1 = io.StringIO(file1).getvalue()
