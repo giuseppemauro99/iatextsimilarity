@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from .models import Greeting
 from .forms import Form1, Form2
 
-redis_url = os.getenv('redis://redis:6379', 'redis://localhost:6379')
+redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
 redis = redis.from_url(redis_url)
 
 # Create your views here.
