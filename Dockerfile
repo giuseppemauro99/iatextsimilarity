@@ -4,8 +4,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
 COPY requirements.txt /code/
-RUN pip --version
-RUN python --version
+RUN echo $(pip --version)
+RUN echo $(python --version)
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r requirements.txt
 COPY . /code/
