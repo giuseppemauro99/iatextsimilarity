@@ -11,6 +11,7 @@ services:
       - ./cache:/data
   web:
     image: iatextsimilarity:v1.0.0
+    restart: always
     build: .
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
