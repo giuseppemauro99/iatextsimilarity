@@ -1,3 +1,5 @@
+setuptools==40.3.0
+scipy==0.18.1
 django
 gunicorn
 django-heroku
@@ -6,6 +8,4 @@ https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-2.3.
 numpy
 gensim
 pymongo
-scipy>=0.18.1
-setuptools>=40.3.0
 redis

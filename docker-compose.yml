@@ -20,7 +20,7 @@ services:
   web:
     image: iatextsimilarity:v1.0.0
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn gettingstarted.wsgi --log-level=debug --workers=7 --timeout=2400
     volumes:
       - .:/code
     ports:
