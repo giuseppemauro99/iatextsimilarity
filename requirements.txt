@@ -2,11 +2,10 @@ psycopg2
 setuptools>=40.3.0
 scipy>=0.18.1
 django
-gunicorn
 django-heroku
+gunicorn
 numpy
 spacy==2.3.6
 https://github.com/explosion/spacy-models/releases/download/it_core_news_md-2.3.0/it_core_news_md-2.3.0.tar.gz
 gensim
-pymongo
 redis

@@ -1,16 +1,6 @@
 version: "3.9"
    
 services:
-  db:
-    image: postgres
-    ports:
-      - '5432:5432'
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   redis:
     image: redis:6.2-alpine
     restart: always
@@ -33,5 +23,4 @@ services:
       - POSTGRES_PASSWORD=postgres
       - DEBUG=true
     depends_on:
-      - db
       - redis
