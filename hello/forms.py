@@ -4,17 +4,17 @@ from django import forms
 class Form1(forms.Form):
     file1 = forms.FileField(label="Inserisci file 1")
     file2_query = forms.FileField(label="Inserisci file 2")
-    label1 = forms.CharField(label="Nome etichetta", initial='label1')
+    label1 = forms.CharField(label="Nome etichetta", initial='basso')
     label1_interval = forms.CharField(label='Intervallo',
                                       widget=forms.TextInput(
                                           attrs={'placeholder': 'Intervallo etichetta, es. 0.0-20.5',
                                                  'class': 'customSize'}), initial='0.0-20.5')
-    label2 = forms.CharField(label="Nome etichetta", initial='label2')
+    label2 = forms.CharField(label="Nome etichetta", initial='medio')
     label2_interval = forms.CharField(label='Intervallo',
                                       widget=forms.TextInput(
                                           attrs={'placeholder': 'Intervallo etichetta, es. 20.5-50.0',
                                                  'class': 'customSize'}), initial='20.5-50.0')
-    label3 = forms.CharField(label="Nome etichetta", initial='label3')
+    label3 = forms.CharField(label="Nome etichetta", initial='alto')
     label3_interval = forms.CharField(label='Intervallo',
                                       widget=forms.TextInput(
                                           attrs={'placeholder': 'Intervallo etichetta, es. 50.0-100.0',
